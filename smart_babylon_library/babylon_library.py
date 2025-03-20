@@ -78,7 +78,7 @@ class BabylonLibrary:
         return sum(self.charset.index(c) * (self.charset_length ** i) for i, c in enumerate(text[::-1]))
 
     def _pad_or_trim_result(self, result):
-        return result.ljust(self.max_page_content_length)[:self.max_page_content_length]
+        return result.ljust(self.max_page_content_length)[:self.max_page_content_length].rstrip()
 
     def _convert_to_base(self, x, base):
         digs = self._get_digits(base)
