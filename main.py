@@ -1,11 +1,10 @@
 import random
 import string
 
-from core.tools import timeit
-
 
 class Library:
-    def __init__(self, charset='abcdefghijklmnopqrstuvwxyz, .',
+    def __init__(self,
+                 charset='abcdefghijklmnopqrstuvwxyz ,.',
                  max_page_content_length=3200, max_walls=4,
                  max_shelves=5, max_volumes=32, max_pages=410,
                  hexagon_base=36):
@@ -41,19 +40,20 @@ class Library:
         page = page.zfill(3)
         library_coordinate = int(page + volume + shelf + wall)
 
-        seed = int(hexagon_address, self.hexagon_base) - library_coordinate * (self.charset_length ** self.max_page_content_length)
+        seed = int(hexagon_address, self.hexagon_base) - library_coordinate * (
+                    self.charset_length ** self.max_page_content_length)
         hexagon_base_result = self._convert_to_base(seed, self.hexagon_base)
         result = self._convert_to_base(int(hexagon_base_result, self.hexagon_base), self.charset_length)
 
         return self._pad_or_trim_result(result)
 
     def _sanitize_text(self, text):
-        return ''.join([c for c in text.lower() if c in self.charset]).rstrip().ljust(self.max_page_content_length, ' ')
+        return ''.join([c for c in text if c in self.charset]).rstrip().ljust(self.max_page_content_length, ' ')
 
     def _calculate_sum_value(self, text):
         sum_value = 0
         for i, c in enumerate(text[::-1]):
-            char_value = ord(c) - ord('a') if c.isalpha() else 28 if c == '.' else 27
+            char_value = self.charset.index(c)
             sum_value += char_value * (self.charset_length ** i)
         return sum_value
 
@@ -96,11 +96,10 @@ class Library:
             return self.charset
 
 
-@timeit
 def main():
     library = Library()
 
-    text_to_search = "Test"
+    text_to_search = 'test'
 
     full_address = library.search_by_content(text_to_search)
 
