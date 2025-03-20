@@ -1,6 +1,8 @@
 import random
 import string
 
+from core.tools import timeit
+
 
 class Library:
     def __init__(self, charset='abcdefghijklmnopqrstuvwxyz, .',
@@ -23,11 +25,15 @@ class Library:
         page = str(random.randint(1, self.max_pages)).zfill(3)
         return int(page + volume + shelf + wall)
 
-    def search_by_content(self, text, library_coordinate):
+    def search_by_content(self, text, wall="1", shelf="01", volume="01", page="001"):
         text = self._sanitize_text(text)
         sum_value = self._calculate_sum_value(text)
+        library_coordinate = int(page.zfill(3) + volume.zfill(2) + shelf + wall)
         result = library_coordinate * (self.charset_length ** self.max_page_content_length) + sum_value
-        return self._convert_to_base(result, self.hexagon_base)
+        hexagon_result = self._convert_to_base(result, self.hexagon_base)
+
+        full_address = f"{hexagon_result}:{wall}:{shelf}:{volume}:{page}"
+        return full_address
 
     def search_by_address(self, address):
         hexagon_address, wall, shelf, volume, page = address.split(':')
@@ -90,24 +96,19 @@ class Library:
             return self.charset
 
 
+@timeit
 def main():
     library = Library()
 
     text_to_search = "Test"
-    library_coordinate = library.generate_library_coordinate()
-    hexagon_result = library.search_by_content(text_to_search, library_coordinate)
 
-    print(f"Address for text '{text_to_search}': {hexagon_result}")
-    wall = "1"
-    shelf = "01"
-    volume = "01"
-    page = "001"
+    full_address = library.search_by_content(text_to_search)
 
-    address = f"{hexagon_result}:{wall}:{shelf}:{volume}:{page}"
+    print(f"Address for text '{text_to_search}': {full_address}")
 
-    content_result = library.search_by_address(address)
+    content_result = library.search_by_address(full_address)
 
-    print(f"Contents at address '{address}': {content_result}")
+    print(f"Contents at address '{full_address}': {content_result}")
 
 
 if __name__ == '__main__':
