@@ -1,21 +1,48 @@
+# --------------------------------------------------------
+# Licensed under the terms of the BSD 3-Clause License
+# (see LICENSE for details).
+# Copyright © 2018-2025, A.A Suvorov
+# All rights reserved.
+# --------------------------------------------------------
+# https://github.com/smartlegionlab/
+# --------------------------------------------------------
 import random
 import string
 
+from smart_babylon_library.config import (
+    CHARSET,
+    MAX_PAGE_CONTENT_LENGTH,
+    MAX_WALLS,
+    MAX_SHELVES,
+    MAX_VOLUMES,
+    MAX_PAGES,
+    HEXAGON_BASE
+)
 
-class Library:
-    def __init__(self,
-                 charset='abcdefghijklmnopqrstuvwxyz ,.',
-                 max_page_content_length=3200, max_walls=4,
-                 max_shelves=5, max_volumes=32, max_pages=410,
-                 hexagon_base=36):
+
+class BabylonLibrary:
+    def __init__(
+            self,
+            charset=CHARSET,
+            max_page_content_length=MAX_PAGE_CONTENT_LENGTH,
+            max_walls=MAX_WALLS,
+            max_shelves=MAX_SHELVES,
+            max_volumes=MAX_VOLUMES,
+            max_pages=MAX_PAGES,
+            hexagon_base=HEXAGON_BASE
+    ):
         self.charset = charset
-        self.charset_length = len(charset)
+        self.charset_length = len(self.charset)
         self.max_page_content_length = max_page_content_length
         self.max_walls = max_walls
         self.max_shelves = max_shelves
         self.max_volumes = max_volumes
         self.max_pages = max_pages
         self.hexagon_base = hexagon_base
+
+    @staticmethod
+    def _format_library_coordinate(page, volume, shelf, wall):
+        return int(page.zfill(3) + volume.zfill(2) + shelf + wall)
 
     def generate_library_coordinate(self):
         wall = str(random.randint(1, self.max_walls))
@@ -27,18 +54,15 @@ class Library:
     def search_by_content(self, text, wall="1", shelf="01", volume="01", page="001"):
         text = self._sanitize_text(text)
         sum_value = self._calculate_sum_value(text)
-        library_coordinate = int(page.zfill(3) + volume.zfill(2) + shelf + wall)
+        library_coordinate = self._format_library_coordinate(page, volume, shelf, wall)
         result = library_coordinate * (self.charset_length ** self.max_page_content_length) + sum_value
         hexagon_result = self._convert_to_base(result, self.hexagon_base)
 
-        full_address = f"{hexagon_result}:{wall}:{shelf}:{volume}:{page}"
-        return full_address
+        return f"{hexagon_result}:{wall}:{shelf}:{volume}:{page}"
 
     def search_by_address(self, address):
         hexagon_address, wall, shelf, volume, page = address.split(':')
-        volume = volume.zfill(2)
-        page = page.zfill(3)
-        library_coordinate = int(page + volume + shelf + wall)
+        library_coordinate = self._format_library_coordinate(page, volume, shelf, wall)
 
         seed = int(hexagon_address, self.hexagon_base) - library_coordinate * (
                     self.charset_length ** self.max_page_content_length)
@@ -48,23 +72,13 @@ class Library:
         return self._pad_or_trim_result(result)
 
     def _sanitize_text(self, text):
-        return ''.join([c for c in text if c in self.charset]).rstrip().ljust(self.max_page_content_length, ' ')
+        return ''.join(c for c in text if c in self.charset).rstrip().ljust(self.max_page_content_length, ' ')
 
     def _calculate_sum_value(self, text):
-        sum_value = 0
-        for i, c in enumerate(text[::-1]):
-            char_value = self.charset.index(c)
-            sum_value += char_value * (self.charset_length ** i)
-        return sum_value
+        return sum(self.charset.index(c) * (self.charset_length ** i) for i, c in enumerate(text[::-1]))
 
     def _pad_or_trim_result(self, result):
-        if len(result) < self.max_page_content_length:
-            random.seed(result)
-            while len(result) < self.max_page_content_length:
-                result += self.charset[int(random.random() * len(self.charset))]
-        elif len(result) > self.max_page_content_length:
-            result = result[-self.max_page_content_length:]
-        return result
+        return result.ljust(self.max_page_content_length)[:self.max_page_content_length]
 
     def _convert_to_base(self, x, base):
         digs = self._get_digits(base)
@@ -87,28 +101,10 @@ class Library:
 
     def _get_digits(self, base):
         if base == 36:
-            return string.digits + 'abcdefghijklmnopqrstuvwxyz'
+            return string.digits + string.ascii_lowercase
         elif base == 10:
-            return '0123456789'
+            return string.digits
         elif base == 60:
-            return '0123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+            return string.digits + string.ascii_uppercase + string.ascii_lowercase
         else:
             return self.charset
-
-
-def main():
-    library = Library()
-
-    text_to_search = 'test'
-
-    full_address = library.search_by_content(text_to_search)
-
-    print(f"Address for text '{text_to_search}': {full_address}")
-
-    content_result = library.search_by_address(full_address)
-
-    print(f"Contents at address '{full_address}': {content_result}")
-
-
-if __name__ == '__main__':
-    main()
