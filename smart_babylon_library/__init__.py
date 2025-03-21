@@ -10,7 +10,8 @@
 from .library_structure import LibraryStructure
 from .text_encoder import TextEncoder
 from .tools import timeit
+from .babylon_library import BabylonLibrary
 
-__version__ = '0.2.1'
+__version__ = '0.3.1'
 __author__ = 'A.A. Suvorov'
-__all__ = ["LibraryStructure", "TextEncoder", "timeit"]
+__all__ = ["LibraryStructure", "TextEncoder", "timeit", "BabylonLibrary"]
