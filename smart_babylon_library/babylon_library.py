@@ -45,7 +45,7 @@ class BabylonLibrary:
 def main():
     library = BabylonLibrary()
 
-    text = "Hello, Babylon!" * 10
+    text = "Hello, Babylon!"
     address = library.search_by_content(text)
     print(f"Address for text: {address}")
     print(f'Address length: {len(address)}')
