@@ -7,6 +7,7 @@ class BabylonLibrary:
     def __init__(self, charset=string.ascii_letters + string.digits + string.punctuation + " " + RU):
         self.charset = charset
         self.charset_length = len(self.charset)
+        self.base62_chars = string.digits + string.ascii_letters
 
     def _sanitize_text(self, text):
         return ''.join(c for c in text if c in self.charset)
@@ -17,21 +18,19 @@ class BabylonLibrary:
             number = number * self.charset_length + self.charset.index(char)
         return number
 
-    def _number_to_code(self, number):
+    def _number_to_base62(self, number):
         if number == 0:
-            return '0'
-        digits = string.digits + string.ascii_lowercase
+            return self.base62_chars[0]
         code = []
         while number > 0:
-            code.append(digits[number % 36])
-            number //= 36
+            code.append(self.base62_chars[number % 62])
+            number //= 62
         return ''.join(reversed(code))
 
-    def _code_to_number(self, code):
-        digits = string.digits + string.ascii_lowercase
+    def _base62_to_number(self, code):
         number = 0
         for char in code:
-            number = number * 36 + digits.index(char)
+            number = number * 62 + self.base62_chars.index(char)
         return number
 
     def _number_to_text(self, number, text_length):
@@ -44,20 +43,22 @@ class BabylonLibrary:
     def search_by_content(self, text):
         text = self._sanitize_text(text)
         number = self._text_to_number(text)
-        code = self._number_to_code(number)
+        code = self._number_to_base62(number)
         return f"{code}:{len(text)}"
 
     def search_by_address(self, address):
         code, text_length = address.split(':')
         text_length = int(text_length)
-        number = self._code_to_number(code)
+        number = self._base62_to_number(code)
         return self._number_to_text(number, text_length)
 
 
 def main():
     library = BabylonLibrary()
 
-    text = "Hello World!"
+    text = "Hello world!"
+    print(f'String: {text}')
+    print(f'String length: {len(text)}')
     address = library.search_by_content(text)
     print(f"Address for text: {address}")
     print(f'Address length: {len(address)}')
