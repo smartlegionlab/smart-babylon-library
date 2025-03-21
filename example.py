@@ -7,6 +7,7 @@
 # https://github.com/smartlegionlab/
 # --------------------------------------------------------
 from smart_babylon_library import LibraryStructure, TextEncoder
+from smart_babylon_library.babylon_library import BabylonLibrary
 from smart_babylon_library.tools import timeit
 
 
@@ -36,6 +37,20 @@ def library_structure_example(text):
     print(f"Decoded full text length: {len(decoded_full_text)} characters")
 
 
+@timeit
+def babylon_library_example():
+    library = BabylonLibrary()
+    print("=== Using BabylonLibrary ===")
+    random_address = library.generate_random_address()
+    print(f"Random address: {random_address}")
+
+    text = library.get_text(random_address)
+    print(f"Text on page ({len(text)} symbols): {text}")
+
+    same_text = library.get_text(random_address)
+    print(f"Text on the same page ({len(same_text)} symbols): {same_text}...")
+
+
 def main():
     print("*** Start ***")
     text = "i love python"
@@ -43,6 +58,7 @@ def main():
     print(f"Text length: {len(text)} characters\n")
     text_encoder_example(text)
     library_structure_example(text)
+    babylon_library_example()
     print("*** End ***")
 
 
