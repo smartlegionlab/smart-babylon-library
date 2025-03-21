@@ -1,4 +1,4 @@
-# Smart Babylon Library <sup>v0.1.0</sup>
+# Smart Babylon Library <sup>v0.2.1</sup>
 
 ***
 
@@ -18,98 +18,181 @@ Author and developer: ___A.A. Suvorov___
 
 ***
 
-## Description:
+# Smart Babylon Library
 
-# __smart_babylon_library__
+**Smart Babylon Library** is a Python library inspired by my 
+own concept of [smart passwords](https://github.com/smartlegionlab/smartpasslib), 
+as well as by the concept of the Babylonian Library by Jorge Luis Borges.
+It allows you to generate unique addresses for texts that are not physically stored,
+but can be restored using previously generated addresses.
+This allows you to find and extract information by specified parameters without storing the texts themselves.
 
-BabylonLibrary is a Python library inspired by the concept of the Babylonian Library 
-that allows generating unique coordinates for texts. 
-These coordinates provide constant access to texts that are not physically stored anywhere, 
-but can only be retrieved by previously generated addresses. 
-This allows users to find and retrieve information by specified parameters.
+---
 
-## Main features:
+## Main features
 
-- **Generate Unique Coordinates**: Create unique coordinates in the form of addresses for texts that can be used for subsequent search.
-- **Search by Address**: Extract text using a previously generated address.
-- **Custom Character Set**: Use your own character set to encode and decode texts.
-- **Convert between number systems**: Support for different number systems for encoding library addresses.
-- **Generate Random Coordinates**: Generate random coordinates and extract texts that may be located at these addresses.
+- **Generate unique addresses**: Create unique addresses for texts that can be used for subsequent search.
+- **Search by address**: Extract text using a previously generated address.
+- **Support for different number systems**: Use different number systems for encoding addresses.
+- **Custom character set**: Ability to use your own character set for encoding and decoding texts.
+- **Generate random coordinates**: Generate random coordinates (wall, shelf, volume, page) for texts.
 
-## Installation:
+---
 
-To use __smart_babylon_library__, simply clone the repository:
+## Installation
+
+To install the library, run the following commands:
 
 ```bash
 git clone https://github.com/smartlegionlab/smart_babylon_library.git
 cd smart_babylon_library
+pip install .
 ```
 
-## Example of use:
+---
+
+## Usage example
+
+### 1. Using `TextEncoder`
+
+`TextEncoder` encodes text into a compact address and decodes it back.
 
 ```python
-from smart_babylon_library import BabylonLibrary
+from smart_babylon_library import TextEncoder
 
-library = BabylonLibrary()
+# Create an instance of TextEncoder
+text_encoder = TextEncoder()
 
-# Getting a unique address for your text
-unique_address = library.search_by_content("your text")
-print(f"Unique address: {unique_address}")
+# Text to encode
+text = "i love python"
 
-# Getting text from a previously received unique address
-address_result = library.search_by_address(unique_address)
-print(f"Result: {address_result}")
+# Encode text to address
+encoded_address = text_encoder.encode_text(text)
+print(f"Encoded address: {encoded_address}")
 
+# Decode address back to text
+decoded_text = text_encoder.decode_address(encoded_address)
+print(f"Decoded text: '{decoded_text}'")
 ```
 
-## Configuration
+### 2. Using `LibraryStructure`
 
-You can customize the library's behavior by changing parameters in the `BabylonLibrary` constructor:
-
-- `charset`: The character set used to encode content.
-- `max_page_content_length`: The maximum length of content on a page.
-- `max_walls`: The maximum number of walls in a library.
-- `max_shelves`: The maximum number of shelves in a library.
-- `max_volumes`: The maximum number of volumes in a library.
-- `max_pages`: The maximum number of pages in a volume.
-- `hexagon_base`: The base used to encode library addresses.
-
-## Use:
+`LibraryStructure` adds a library structure (walls, shelves, volumes, pages) to the text encoding.
 
 ```python
-from smart_babylon_library import BabylonLibrary
+from smart_babylon_library import LibraryStructure
+
+# Create an instance of LibraryStructure
+library_structure = LibraryStructure()
+
+# Text to encode
+text = "i love python"
+
+# Encode text to address with coordinates
+full_address = library_structure.encode_text_to_address(text)
+print(f"Full library address: {full_address}")
+
+# Decode address back to text
+decoded_full_text = library_structure.decode_address_to_text(full_address)
+print(f"Decoded full text: '{decoded_full_text}'")
+```
+
+### 3. Full example
+
+```python
+from smart_babylon_library import LibraryStructure, TextEncoder
 from smart_babylon_library.tools import timeit
-
 
 @timeit
 def main():
-    library = BabylonLibrary()
+    # Text to encode
+    text = "i love python"
+    print(f"Original text: '{text}'")
+    print(f"Text length: {len(text)} characters\n")
 
-    text_to_search = 'test'
+    # Using TextEncoder
+    text_encoder = TextEncoder()
+    encoded_address = text_encoder.encode_text(text)
+    print(f"Encoded address (TextEncoder): {encoded_address}")
+    decoded_text = text_encoder.decode_address(encoded_address)
+    print(f"Decoded text: '{decoded_text}'\n")
 
-    full_address = library.search_by_content(text_to_search)
+    # Using LibraryStructure
+    library_structure = LibraryStructure()
+    full_address = library_structure.encode_text_to_address(text)
+    print(f"Full library address (LibraryStructure): {full_address}")
+    decoded_full_text = library_structure.decode_address_to_text(full_address)
+    print(f"Decoded full text: '{decoded_full_text}'")
 
-    print(f"Address for text '{text_to_search}': {full_address}")
-
-    content_result = library.search_by_address(full_address)
-
-    print(f"Contents at address '{full_address}': {content_result}")
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
-
-
 ```
 
-Output:
+---
+
+## Configuration
+
+You can customize the library behavior by changing the parameters in the class constructors:
+
+### For `TextEncoder`:
+- `charset`: The character set for encoding and decoding texts. By default, it includes Latin letters, numbers, punctuation marks, spaces, and Cyrillic.
+
+### For `LibraryStructure`:
+- `charset`: The character set for encoding and decoding texts.
+- `max_page_content_length`: The maximum length of text on a page.
+- `num_walls`: The number of walls in the library.
+- `num_shelves`: The number of shelves on a wall.
+- `num_volumes`: The number of volumes on a shelf.
+- `num_pages`: The number of pages in a volume.
+- `hexagon_base`: The base of the number system for encoding addresses.
+
+---
+
+## Project structure
+
+- **`library_structure.py`**: `LibraryStructure` implementation for working with library coordinates.
+- **`text_encoder.py`**: `TextEncoder` implementation for encoding and decoding texts.
+- **`config.py`**: Library configuration parameters.
+- **`tools.py`**: Helper functions (e.g. `timeit` decorator).
+- **`example.py`**: Example of library usage.
+
+---
+
+`python example.py` - Output:
 
 ```
-Address for text 'test': 1m1i0nftdvvzcca2ut6i3belca42zi16m6zzllgm1n7wpgcv0jjo8fadlkfzk6ysyxsnkcoe3egb1oa64x22rwwbvu19focifcpweezvlp2ab0jso01wyw4xfgwypenmuer1oabaes92p92ypy12wl6l2cf7jc7i4u9mtcbc6zyst48ansgky2z9mqgfp97bwmq7aouisub0d3isv8bs68a6qxpx07h6ayzk3u6d87c8osfmtbiqo4tcdrwt8s7bne2eqep46jbnc2f96uwsqnu9v15tqsrhxrinjh8fd9nz3bd64ubc3y0fw8snnvyswp7fb90bihi93wybgvdk8loatbipqkz5dsybv2ekmzig0ibnyhr5ej5dw2k6kgrh5qncpw63g1dbgn4nuadk8undu4fz3aivh6nf6gorhxyyf2wm6lql5hb2esfmz0fji56mv13o5unnlpjx97cgk4nv82oyc3iarrnslis0agtq8ehm44zx0pxbuzs0i4tfk78q9tis73a375lhgyjko3108117x3odzuke0oit2pwp6toyel3jclututmnbcsbg7fdeybd8uimygw0lfypov6zp503rah0lxibvh5ujpxqxq1sfpelpwwjj275bet9jzlxgfihfeeo6b175224owo9z9kq2hxxm8vnguckzzzmc2jfbpchk78k8da7nj66i6j6c0xsxbjbghct6afgk9uo48tlrbflajg6apg0mjj89fzvhutqm6urtnt2zecr5zhlxdvjudgmue5u40vj3bwrxbre557kvjwdmd26cn0e4gy2ivsyd6b7vfmbbm2uiucxnvgszgi3lf97lffsbussmyd9aqlsyfhjww1poqgandwpmgh56jm67y37s4ryifkn82bmj3nj0whz9bp91dana0c7a6lf2bal2wwre4mvwy3p3f5mlgitzprf8uve4ybqymj6h2zs9hdorvz1pc7tfzm7ejx2uk6jojkq4f4m4iy26nn5toup53yedc7dybazaxirb459tuza69n88zcj127v3hond7qky0uon2689tbjrc3c4rz9jtjffoeoglaw3axmjz9tk40urk2fbwvwpxiw5gdn9v5m9yjz878orj8glxmd0eqklcjnizr7r55rgqwm6v1h1q1r4309pvds0of6sybfinmr6ygj328rpqj7jscglhpmtvxzbsmbvo6p8d1oeiltll8dhym5nqlskj4e00g973ny5gsx829bfte5qwh8rq1mgwlx01p2dcy5lqwhmk2oe5ri53vmbn7wo756mss8uc9y6uavl7ny1trrivgujkdueyl026y8llq10jsgz74nw6s10jrv90ov1fx72pnqdh7h05ikcysb79e99p50k5w3urliiyj60i4uimscb7wsht7twqk01re4560io73hvfboa7s0wahkhqjh053rn6772c648vezof37bihretwiauxblr0g937imj1ibly3s81vamhnsfbgw420x4tutfnwl7pm30qeugspiytln8iuwf5othforp8kbmkqxiemzs9n9xo6o94f65brfty0vk01esxdwz3hfl2krl2y2kcho6ys38opy47vryvdm0uex07nfbknax4v6dk2rs4o0cc1pluf4p6dcmjcbuc99g9rse00oxaznztz7fggfptif6owmbu8kvgyl0k2wi9dozd5fi6pnau9ykai80i0edk7pbt8czzyls0zmc08x8bsqt58iequrc40amydw78zq25gkh7wl4e65a5ual0gmstfn80gfb4vaqo1axysmoykn52vrivalzdynil2sexapxgfkbnh2jdmmxwf3ozgsw8g59n4e79u7p4idk85zvvwbuw3qbcm1xf19zi9sif3gruufe86bpcaxkgh9nngs6nqhqpbr7vxnkgn0y2vi7jlrhzb3zdjuqdcd1ya7ednpz29mazigooiau446bldvryp40wp37b5p9ittkyaw3lqfmlrpstwdcarbjqcxamp081pjeyc5tf1qg4v9h8dhzk71s80x8vnc73ghucq33ofafimwy7sso90gjmo4iorjo0a2o77epni1830zajm9vfhsnf0cxzkdh3fc4zj7xltc1ih3c5674duwfh6kbti4h542mp7tmwihgqj9v68whzpxbkri3rjd56edywskqdn4rs9jccis4ul97ddvhh2tjtj9xwt8ztix7ujz7w3agx5umxtf1r7qytiycmabllxeqgyi5scwef2zwdfoemmixy00sd9i4635fstbnoy87p7sxkovj1gkc72syehrpkrwntys52p9u3kiglduz79lb55bq9s79urwul73j5ciwmnmd142djg3ie5uszrt4a45b1pqh1p05e3uoc01037m06cc4df01hltjiiu8a5ka3qr69m87wykjcozfdo78u4zi18ndx5we1q4zknpp2g94d85vejhvr8yv0p7jyxckntivsvnjqlbjm9i0cbpvl7ynp5emjoo53vn61jrh6d7o4gtu3b1zuq83lkkkzevb8bd9dgfa5usv8y8g96axetrvmxf84wkno425ij8v1809s5lac32rp41ciz3ekrf7giv8l11jwhdy2y8sw52vysky7ihz72bxhcrlzvcpvln7l7zh94wvovef0jk4p3go73elj7kth0wqw2fp551fry353rsapll8yjppw62izqkgzlgw7phtfbsrtybec0f7uyss4i0gfazr1940gu2zoiyyu91580hl6p2qw765oq5pd3lvgpoagw91kvi597ymv5anb6smo4rltuwpv7yosssh86rrcxswkz3up1otuoh7n1whd81prr62lc49b8pxs78u4qlqfsgz9f93yrvjakdl0ofj0ibcj5zryi0bq1hzf2in0cfsv0rkixdsfkwsvhdle9yk4veyckl3x2pbp69t5txza77r7a784v0whb3iamnypwh26yi9n:1:01:01:001
-Contents at address '1m1i0nftdvvzcca2ut6i3belca42zi16m6zzllgm1n7wpgcv0jjo8fadlkfzk6ysyxsnkcoe3egb1oa64x22rwwbvu19focifcpweezvlp2ab0jso01wyw4xfgwypenmuer1oabaes92p92ypy12wl6l2cf7jc7i4u9mtcbc6zyst48ansgky2z9mqgfp97bwmq7aouisub0d3isv8bs68a6qxpx07h6ayzk3u6d87c8osfmtbiqo4tcdrwt8s7bne2eqep46jbnc2f96uwsqnu9v15tqsrhxrinjh8fd9nz3bd64ubc3y0fw8snnvyswp7fb90bihi93wybgvdk8loatbipqkz5dsybv2ekmzig0ibnyhr5ej5dw2k6kgrh5qncpw63g1dbgn4nuadk8undu4fz3aivh6nf6gorhxyyf2wm6lql5hb2esfmz0fji56mv13o5unnlpjx97cgk4nv82oyc3iarrnslis0agtq8ehm44zx0pxbuzs0i4tfk78q9tis73a375lhgyjko3108117x3odzuke0oit2pwp6toyel3jclututmnbcsbg7fdeybd8uimygw0lfypov6zp503rah0lxibvh5ujpxqxq1sfpelpwwjj275bet9jzlxgfihfeeo6b175224owo9z9kq2hxxm8vnguckzzzmc2jfbpchk78k8da7nj66i6j6c0xsxbjbghct6afgk9uo48tlrbflajg6apg0mjj89fzvhutqm6urtnt2zecr5zhlxdvjudgmue5u40vj3bwrxbre557kvjwdmd26cn0e4gy2ivsyd6b7vfmbbm2uiucxnvgszgi3lf97lffsbussmyd9aqlsyfhjww1poqgandwpmgh56jm67y37s4ryifkn82bmj3nj0whz9bp91dana0c7a6lf2bal2wwre4mvwy3p3f5mlgitzprf8uve4ybqymj6h2zs9hdorvz1pc7tfzm7ejx2uk6jojkq4f4m4iy26nn5toup53yedc7dybazaxirb459tuza69n88zcj127v3hond7qky0uon2689tbjrc3c4rz9jtjffoeoglaw3axmjz9tk40urk2fbwvwpxiw5gdn9v5m9yjz878orj8glxmd0eqklcjnizr7r55rgqwm6v1h1q1r4309pvds0of6sybfinmr6ygj328rpqj7jscglhpmtvxzbsmbvo6p8d1oeiltll8dhym5nqlskj4e00g973ny5gsx829bfte5qwh8rq1mgwlx01p2dcy5lqwhmk2oe5ri53vmbn7wo756mss8uc9y6uavl7ny1trrivgujkdueyl026y8llq10jsgz74nw6s10jrv90ov1fx72pnqdh7h05ikcysb79e99p50k5w3urliiyj60i4uimscb7wsht7twqk01re4560io73hvfboa7s0wahkhqjh053rn6772c648vezof37bihretwiauxblr0g937imj1ibly3s81vamhnsfbgw420x4tutfnwl7pm30qeugspiytln8iuwf5othforp8kbmkqxiemzs9n9xo6o94f65brfty0vk01esxdwz3hfl2krl2y2kcho6ys38opy47vryvdm0uex07nfbknax4v6dk2rs4o0cc1pluf4p6dcmjcbuc99g9rse00oxaznztz7fggfptif6owmbu8kvgyl0k2wi9dozd5fi6pnau9ykai80i0edk7pbt8czzyls0zmc08x8bsqt58iequrc40amydw78zq25gkh7wl4e65a5ual0gmstfn80gfb4vaqo1axysmoykn52vrivalzdynil2sexapxgfkbnh2jdmmxwf3ozgsw8g59n4e79u7p4idk85zvvwbuw3qbcm1xf19zi9sif3gruufe86bpcaxkgh9nngs6nqhqpbr7vxnkgn0y2vi7jlrhzb3zdjuqdcd1ya7ednpz29mazigooiau446bldvryp40wp37b5p9ittkyaw3lqfmlrpstwdcarbjqcxamp081pjeyc5tf1qg4v9h8dhzk71s80x8vnc73ghucq33ofafimwy7sso90gjmo4iorjo0a2o77epni1830zajm9vfhsnf0cxzkdh3fc4zj7xltc1ih3c5674duwfh6kbti4h542mp7tmwihgqj9v68whzpxbkri3rjd56edywskqdn4rs9jccis4ul97ddvhh2tjtj9xwt8ztix7ujz7w3agx5umxtf1r7qytiycmabllxeqgyi5scwef2zwdfoemmixy00sd9i4635fstbnoy87p7sxkovj1gkc72syehrpkrwntys52p9u3kiglduz79lb55bq9s79urwul73j5ciwmnmd142djg3ie5uszrt4a45b1pqh1p05e3uoc01037m06cc4df01hltjiiu8a5ka3qr69m87wykjcozfdo78u4zi18ndx5we1q4zknpp2g94d85vejhvr8yv0p7jyxckntivsvnjqlbjm9i0cbpvl7ynp5emjoo53vn61jrh6d7o4gtu3b1zuq83lkkkzevb8bd9dgfa5usv8y8g96axetrvmxf84wkno425ij8v1809s5lac32rp41ciz3ekrf7giv8l11jwhdy2y8sw52vysky7ihz72bxhcrlzvcpvln7l7zh94wvovef0jk4p3go73elj7kth0wqw2fp551fry353rsapll8yjppw62izqkgzlgw7phtfbsrtybec0f7uyss4i0gfazr1940gu2zoiyyu91580hl6p2qw765oq5pd3lvgpoagw91kvi597ymv5anb6smo4rltuwpv7yosssh86rrcxswkz3up1otuoh7n1whd81prr62lc49b8pxs78u4qlqfsgz9f93yrvjakdl0ofj0ibcj5zryi0bq1hzf2in0cfsv0rkixdsfkwsvhdle9yk4veyckl3x2pbp69t5txza77r7a784v0whb3iamnypwh26yi9n:1:01:01:001': test                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
-Execution time: 0.1033 seconds
+*** Start ***
+Original text: 'i love python'
+Text length: 13 characters
+
+=== Using TextEncoder ===
+Encoded address: 3nXlhvnQaof57t1E:13
+Encoded address length: 19 characters
+Decoded text: 'i love python'
+Decoded text length: 13 characters
+--------------------------------------------------------------------------------
+Execution time: 0.000031 seconds
+--------------------------------------------------------------------------------
+=== Using LibraryStructure ===
+Full library address: 1m1hr6boe0bpgbonm2s75m7qmnhy0bhyfs4qpq0ro353ly0iwtec5c6fc3hsv5binild7o0trgi5rxoh3j2qkjtpvts6ozng2aypej8h7q6xqhj61y1lx861skz4qobcu1ig9w5bxuvdvgn3pamvit00fu0e7zha97hahsaypy3lwsk0iq3j2g0slxj4cllr4jl0wf7z1fiig94wx9x54zk3j7y8lh4h4acits9j8q8vg313vil0bth37mx9yohlldo8jyxdfxul6gzs9r02a6dccvhtapr2p7l615kbt72a5yq07k6djvczw3zwsvn2psbbb24ynhzvecaeefdaky3fau6vdgp4du9f2pxg9kf3mjipxjqbmjobhcxznzi17amie3aiyxphv00h8nhkfqenqd6vj93yh88lk1hgs0l2r9qd6y2lmhe8c93xgiasfpm8g17wrdclsh9cezpsfrc8ucpeenilvvnq0ywdqo33jdfv4cco4w7452u93keasdx4e0szfilzavnkjjriog7vliv20r86gnng8w90kpg7mb350rfqwryvj3p1c8ai7ofu8ddzk7t4k7d0q6rduni9d3y1y87ar5gwkaa18udr8i23o7h1wwbe9rpudeqs1u4dis2wsnvhhogvxa08kp5tq8ft16ck4c8sr5bbu5unb8ewxmirskb7758gyf8o04grnp02q9v4kkrs4zfb93jhvhrc2zjmykgoqxgydb65nzrqw1thlprvbi1wh1vrb1bpoqlmnh5l3m0jtem0lfyf4cn0ptlhgn3uscrl6nc2yxlcuq0ey5brio2zobo456oxohar5l8onaayik56mqd2f6sdf732dg3r3tsqdanvsy4wm1qg25jru5gims6a7izngzo7jxktdh9q8is62j7yuj2011fzby4iri5d15l33gt78tmpiu2luwhtpllc18550xcys65h63wn0d4rxvvwt0q1e772y3vjhge6e7jpb91akgs2m2zjlggt3plf2kdhkyanp3s2znm7pl560ndnfcoss2dm8z34h1bjzihude9twx0gnuah0i5y8785hgdzlbzfml610c1x9ac3kdq6k65zgcm2nsgbmizlkfrkcu7wo9hy3butdx94i38px1m8k673h5mmh8o3bvj1o6rbia1uyqg7kne8vvsdm131dc594kfu5zsoz8a3392fi07lnomjmfseiom0xkya6ee4g06d106qp3bsvd7v661h99tpm0f8rvbkcam7b3slot0pacawdyc6vw9ggxlbjeggjuaortzol1y8qt4dh7lndbkv2poc6b0obqy99dl18696dq1hmr6snt5yss1f760kncifdgrtmqgk0b1tgupryv5vojc14pddkv4byfo7x8tqv2d5kz3kg2hvi7htph80da3l9x1oyv06wqtn0fe2f2dhzfixhx0c6sqv7353f8g5ip6o7462e2objh9v9skx8vdgx9pcfqrljioeffqss75916moq8x1m0cjd9gu3y2s44ig4pebgad4vfsnsis8z4182sm6cd2o9kawdeh2wjo3mkzegvsxso44sntkounnsvor0aaw805t2xmab5hgwbtipt023clcak0jgemv3b40o6ra25p4qax3y2omxk8ix2v591075wx8zvz6509jtwfuk8f2egwa2xr6emz2rltzmvkw60ipz2mkfst6tn5k2zbwn1nqs3e5571zt49s3vd8yzz3wf3nr748b9ncaveansibbl9szdl81kmt6foaetngvo52c298ty1lq4pbk4bqt318y5tpoyhkltdj1016s0zvgcsshcbxg04fwtafugsvoivp7hbtsnkyr3uql1l8dzgr58q6etmm6wt76cbfy71ccyau31v0vcj6x5bwmy7lswn9sf5q66phxgc6hrj5wcri3b9d2ngftphqywftag2654f92dc3mbsidq5cd3mmgq4fcf3x64cj1gsq7vrvvsmzvnqok7exhglchlmwp8df3ht6ey60rwuk97k3j2c4oo7jyjt8ojko397arn25uoj4ob5xuyju8s5mm6nsjc70o73xwria7l1yv3dhxp5raihq99vjssxuqcapa4tpyjxrgmzxlya8p6fg824o05zdq4r8cej6qsiov4xvsxes9bpssl0s3piao45mzsxb7zc368udrbhy1l987jl1ds7iviq7j2rcl70iughzlgd3aoyf6ebbmb1u00oj7or0hzhstokmt4ykcktpykntlzkx8159jm3275oaflczevgwbr1pize9gxd8xc510937ed7wluj4exi0gda6co5858fsrky7lhj2tuqzcerdtem9hzva0qlw73nzipf6t6mydebkgp88f52ro5nr292ewcrql193p8w5uros3e8ysmvycclazvpfyla8kqmw10nctsaookql6vufi880q9b8r4kpe6xvikgdmc0ni29b3i9cjffzh7hnuxaqi44lyn3egfunk21j5xsk6azqy1g6e9eogbmmup6263mi0ts9nbn50xr3n5gc6i2n6w6wjth4kz3zcet2urpxa3wycx0fq741c1bu61zq9371dtxyf0ja93x637dfy9saxi6cge0jgzkm37nsv8jlrgko8q6bsyjh4p2m7o3kw9ken6atbmh34ey3jbw4xpo9xfn2o5m7ejzwzusjm7iqty7hskacdez019juqi23pok65kpm723255xq3cwjbvpgvlbkbaqs4dy587b0sh0xicese1hx819n879fjcoliu46oxa97zk6v3gxi20gpbgt3i1t8ot6tedr7llk1eq6hf8de8m3xsri1f5bsriwdq4slnbzif4vae41dtutyl5ho1h4jwwqratt6dbmij4rhtv7q63c6toesr36unzhq6ahsepa7o6gkdt9j40j79jv1ex9hl07dkqsgzc443mme2x3t6ystyep7ncis2g4mak5wdf:1:01:01:001
+Full address length: 3023 characters
+Decoded full text: 'i love python'
+Decoded full text length: 13 characters
+--------------------------------------------------------------------------------
+Execution time: 0.055446 seconds
+--------------------------------------------------------------------------------
+*** End ***
 ```
 
+
+***
+
+## Information for developers:
+
+- `pip install setuptools twine wheel`
+- `pip install --upgrade pip`
+- `python setup.py sdist bdist_wheel`
+- `twine upload dist/*`
 
 ***
 

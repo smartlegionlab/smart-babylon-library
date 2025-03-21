@@ -7,6 +7,10 @@
 # https://github.com/smartlegionlab/
 # --------------------------------------------------------
 """Smart Babylon Library"""
-from .babylon_library import BabylonLibrary
+from .library_structure import LibraryStructure
+from .text_encoder import TextEncoder
+from .tools import timeit
+
+__version__ = '0.2.1'
 __author__ = 'A.A. Suvorov'
-__version__ = '0.1.0'
+__all__ = ["LibraryStructure", "TextEncoder", "timeit"]

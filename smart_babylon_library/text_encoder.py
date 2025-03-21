@@ -1,9 +1,17 @@
+# --------------------------------------------------------
+# Licensed under the terms of the BSD 3-Clause License
+# (see LICENSE for details).
+# Copyright © 2018-2025, A.A Suvorov
+# All rights reserved.
+# --------------------------------------------------------
+# https://github.com/smartlegionlab/
+# --------------------------------------------------------
 import string
 
-RU = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'
+from smart_babylon_library.config import RU
 
 
-class BabylonLibrary:
+class TextEncoder:
     def __init__(self, charset=string.ascii_letters + string.digits + string.punctuation + " " + RU):
         self.charset = charset
         self.charset_length = len(self.charset)
@@ -12,13 +20,13 @@ class BabylonLibrary:
     def _sanitize_text(self, text):
         return ''.join(c for c in text if c in self.charset)
 
-    def _text_to_number(self, text):
+    def _text_to_num(self, text):
         number = 0
         for char in text:
             number = number * self.charset_length + self.charset.index(char)
         return number
 
-    def _number_to_base62(self, number):
+    def _num_to_base62(self, number):
         if number == 0:
             return self.base62_chars[0]
         code = []
@@ -27,45 +35,27 @@ class BabylonLibrary:
             number //= 62
         return ''.join(reversed(code))
 
-    def _base62_to_number(self, code):
+    def _base62_to_num(self, code):
         number = 0
         for char in code:
             number = number * 62 + self.base62_chars.index(char)
         return number
 
-    def _number_to_text(self, number, text_length):
+    def _num_to_text(self, number, text_length):
         text = []
         for _ in range(text_length):
             number, remainder = divmod(number, self.charset_length)
             text.append(self.charset[remainder])
         return ''.join(reversed(text))
 
-    def search_by_content(self, text):
+    def encode_text(self, text):
         text = self._sanitize_text(text)
-        number = self._text_to_number(text)
-        code = self._number_to_base62(number)
+        number = self._text_to_num(text)
+        code = self._num_to_base62(number)
         return f"{code}:{len(text)}"
 
-    def search_by_address(self, address):
+    def decode_address(self, address):
         code, text_length = address.split(':')
         text_length = int(text_length)
-        number = self._base62_to_number(code)
-        return self._number_to_text(number, text_length)
-
-
-def main():
-    library = BabylonLibrary()
-
-    text = "Hello world!"
-    print(f'String: {text}')
-    print(f'String length: {len(text)}')
-    address = library.search_by_content(text)
-    print(f"Address for text: {address}")
-    print(f'Address length: {len(address)}')
-
-    retrieved_text = library.search_by_address(address)
-    print(f"Text at address: '{retrieved_text}'")
-
-
-if __name__ == "__main__":
-    main()
+        number = self._base62_to_num(code)
+        return self._num_to_text(number, text_length)

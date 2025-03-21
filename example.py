@@ -6,24 +6,45 @@
 # --------------------------------------------------------
 # https://github.com/smartlegionlab/
 # --------------------------------------------------------
-from smart_babylon_library import BabylonLibrary
+from smart_babylon_library import LibraryStructure, TextEncoder
 from smart_babylon_library.tools import timeit
 
 
 @timeit
+def text_encoder_example(text):
+    text_encoder = TextEncoder()
+    print("=== Using TextEncoder ===")
+    encoded_address = text_encoder.encode_text(text)
+    print(f"Encoded address: {encoded_address}")
+    print(f"Encoded address length: {len(encoded_address)} characters")
+
+    decoded_text = text_encoder.decode_address(encoded_address)
+    print(f"Decoded text: '{decoded_text}'")
+    print(f"Decoded text length: {len(decoded_text)} characters")
+
+
+@timeit
+def library_structure_example(text):
+    library_structure = LibraryStructure()
+    print("=== Using LibraryStructure ===")
+    full_address = library_structure.encode_text_to_address(text)
+    print(f"Full library address: {full_address}")
+    print(f"Full address length: {len(full_address)} characters")
+
+    decoded_full_text = library_structure.decode_address_to_text(full_address)
+    print(f"Decoded full text: '{decoded_full_text}'")
+    print(f"Decoded full text length: {len(decoded_full_text)} characters")
+
+
 def main():
-    library = BabylonLibrary()
-
-    text_to_search = 'test'
-
-    full_address = library.search_by_content(text_to_search)
-
-    print(f"Address for text '{text_to_search}': {full_address}")
-
-    content_result = library.search_by_address(full_address)
-
-    print(f"Contents at address '{full_address}': {content_result}")
+    print("*** Start ***")
+    text = "i love python"
+    print(f"Original text: '{text}'")
+    print(f"Text length: {len(text)} characters\n")
+    text_encoder_example(text)
+    library_structure_example(text)
+    print("*** End ***")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

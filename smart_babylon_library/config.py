@@ -10,8 +10,9 @@ import string
 
 CHARSET = string.ascii_lowercase + ' ,.'
 MAX_PAGE_CONTENT_LENGTH = 3200
-MAX_WALLS = 4
-MAX_SHELVES = 5
-MAX_VOLUMES = 32
-MAX_PAGES = 410
+NUM_WALLS = 4
+NUM_SHELVES = 5
+NUM_VOLUMES = 32
+NUM_PAGES = 410
 HEXAGON_BASE = 36
+RU = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'

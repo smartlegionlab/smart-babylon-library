@@ -6,6 +6,7 @@
 # --------------------------------------------------------
 # https://github.com/smartlegionlab/
 # --------------------------------------------------------
+import shutil
 import time
 
 
@@ -14,6 +15,15 @@ def timeit(func):
         start_time = time.time()
         result = func(*args, **kwargs)
         end_time = time.time()
-        print(f"Execution time: {end_time - start_time:.4f} seconds")
+
+        console_width = shutil.get_terminal_size().columns
+
+        separator = '-' * console_width
+
+        print(separator)
+        print(f"Execution time: {end_time - start_time:.6f} seconds")
+        print(separator)
+
         return result
+
     return wrapper
