@@ -60,6 +60,18 @@ def main():
     library_structure_example(text)
     babylon_library_example()
     print("*** End ***")
+    library = BabylonLibrary()
+
+    target_text = "xxx"
+    pattern = {"room": 42, "wall": 3}
+    # pattern = None
+    address, text = library.search_for_text_with_pattern(target_text, pattern, max_attempts=1000000)
+    if address:
+        print(f"Address found: {address}")
+        print(f"Text on page: {text}")
+    else:
+        print(f"Text '{target_text}' not found.")
+    # Address found: Room6:Wall2:Shelf4:Volume9:Book18:Page50
 
 
 if __name__ == "__main__":
