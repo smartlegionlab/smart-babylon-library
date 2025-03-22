@@ -2,72 +2,10 @@ import hashlib
 import random
 import string
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from typing import List, Optional, Dict, Tuple
+from typing import Optional, Dict, Tuple
 
 
 RU = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
-
-
-class BookGenerator:
-    def __init__(
-        self,
-        charset: str = RU + string.ascii_letters + string.digits + string.punctuation + ' ',
-        min_word_length: int = 1,
-        max_word_length: int = 15,
-        max_sentences_per_paragraph: int = 10,
-        max_paragraphs_per_page: int = 5,
-        page_length: int = 3200,
-    ):
-        self.charset = charset
-        self.min_word_length = min_word_length
-        self.max_word_length = max_word_length
-        self.max_sentences_per_paragraph = max_sentences_per_paragraph
-        self.max_paragraphs_per_page = max_paragraphs_per_page
-        self.page_length = page_length
-
-    def generate_word(self) -> str:
-        length = random.randint(self.min_word_length, self.max_word_length)
-        return ''.join(random.choice(self.charset) for _ in range(length))
-
-    def generate_sentence(self) -> str:
-        sentence_length = random.randint(5, 20)  # Number of words in a sentence
-        words = [self.generate_word() for _ in range(sentence_length)]
-        sentence = ' '.join(words).capitalize()
-        sentence += random.choice(['.', '!', '?'])
-        return sentence
-
-    def generate_paragraph(self) -> str:
-        paragraph_length = random.randint(3, self.max_sentences_per_paragraph)
-        sentences = [self.generate_sentence() for _ in range(paragraph_length)]
-        return ' '.join(sentences)
-
-    def generate_page(self) -> str:
-        page = []
-        while len(''.join(page)) < self.page_length:
-            paragraph = self.generate_paragraph()
-            page.append(paragraph)
-            if len(page) >= self.max_paragraphs_per_page:
-                break
-        return '\n\n'.join(page)
-
-    def generate_book(self, num_pages: int, title: Optional[str] = None) -> Dict[str, List[str]]:
-        if title is None:
-            title = self.generate_word()  # Generate a random title
-        pages = [self.generate_page() for _ in range(num_pages)]
-        return {"title": title, "pages": pages}
-
-    def search_in_book(self, book: Dict[str, List[str]], target_text: str) -> Optional[Tuple[str, int, int, int]]:
-        for page_index, page in enumerate(book["pages"]):
-            start_index = page.find(target_text)
-            if start_index != -1:
-                return book["title"], page_index, start_index, start_index + len(target_text)
-        return None
-
-    def search_by_title(self, books: List[Dict[str, List[str]]], title: str) -> Optional[Dict[str, List[str]]]:
-        for book in books:
-            if book["title"] == title:
-                return book
-        return None
 
 
 class BabylonLibrary:
@@ -257,69 +195,40 @@ class BabylonLibraryIterator:
 
 def main():
     library = BabylonLibrary()
-    #
-    # # Example 1: Get text by address
-    # address = "Room1:Wall1:Shelf1:Volume1:Book1:Page1"
-    # text = library.get_text(address)
-    # print(f"Text at address {address}:\n{text}\n")
-    #
-    # # Example 2: Get text by address with coordinates
-    # address_with_coords = "Room1:Wall1:Shelf1:Volume1:Book1:Page1:10:20"
-    # partial_text = library.get_text(address_with_coords)
-    # print(f"Text at address {address_with_coords}:\n{partial_text}\n")
-    #
-    # # Example 3: Search for text
-    # target_text = "xxx"
-    # found_address, found_coords = library.search_for_text_with_pattern(target_text, max_attempts=1000)
-    # if found_address:
-    #     print(f"Text '{target_text}' found at address {found_address}:\n{library.get_text(found_address)}\n")
-    # else:
-    #     print(f"Text '{target_text}' not found in 1000 attempts.\n")
-    #
-    # # Example 4: Iterate using the iterator
-    # print("Iterating through the library:")
-    # iterator = BabylonLibraryIterator(library)
-    # for _ in range(5):
-    #     address, text = next(iterator)
-    #     print(f"Address: {address}\nText: {text[:50]}...\n")
-    #
-    # # Example: Parallel search
-    # target_text = "xxx"
-    # found_address, found_coords = library.search_for_text_with_pattern_parallel(target_text, max_attempts=1000,
-    #                                                                             num_threads=4)
-    # if found_address:
-    #     print(f"Text '{target_text}' found at address {found_address}:\n{library.get_text(found_address)}\n")
-    # else:
-    #     print(f"Text '{target_text}' not found in 1000 attempts.\n")
 
-    # Create a book generator
-    # book_gen = BookGenerator()
-    #
-    # # Generate a book with 5 pages
-    # book = book_gen.generate_book(num_pages=5, title="My First Book")
-    #
-    # # Print the book's title and first page
-    # print(f"Book Title: {book['title']}")
-    # print("First page of the book:")
-    # print(book["pages"][0])
-    #
-    # # Search for a word in the book
-    # target_text = "hello"
-    # result = book_gen.search_in_book(book, target_text)
-    # if result:
-    #     title, page_index, start, end = result
-    #     print(f"Text '{target_text}' found in book '{title}', page {page_index + 1}, position {start}-{end}.")
-    # else:
-    #     print(f"Text '{target_text}' not found in the book.")
-    #
-    # # Search for a book by title
-    # books = [book_gen.generate_book(num_pages=3) for _ in range(5)]  # Generate 5 random books
-    # search_title = books[2]["title"]  # Search for the third book's title
-    # found_book = book_gen.search_by_title(books, search_title)
-    # if found_book:
-    #     print(f"Book found: {found_book['title']}")
-    # else:
-    #     print(f"Book with title '{search_title}' not found.")
+    # Example 1: Get text by address
+    address = "Room1:Wall1:Shelf1:Volume1:Book1:Page1"
+    text = library.get_text(address)
+    print(f"Text at address {address}:\n{text}\n")
+
+    # Example 2: Get text by address with coordinates
+    address_with_coords = "Room1:Wall1:Shelf1:Volume1:Book1:Page1:10:20"
+    partial_text = library.get_text(address_with_coords)
+    print(f"Text at address {address_with_coords}:\n{partial_text}\n")
+
+    # Example 3: Search for text
+    target_text = "xxx"
+    found_address, found_coords = library.search_for_text_with_pattern(target_text, max_attempts=1000)
+    if found_address:
+        print(f"Text '{target_text}' found at address {found_address}:\n{library.get_text(found_address)}\n")
+    else:
+        print(f"Text '{target_text}' not found in 1000 attempts.\n")
+
+    # Example 4: Iterate using the iterator
+    print("Iterating through the library:")
+    iterator = BabylonLibraryIterator(library)
+    for _ in range(5):
+        address, text = next(iterator)
+        print(f"Address: {address}\nText: {text[:50]}...\n")
+
+    # Example: Parallel search
+    target_text = "xxx"
+    found_address, found_coords = library.search_for_text_with_pattern_parallel(target_text, max_attempts=1000,
+                                                                                num_threads=4)
+    if found_address:
+        print(f"Text '{target_text}' found at address {found_address}:\n{library.get_text(found_address)}\n")
+    else:
+        print(f"Text '{target_text}' not found in 1000 attempts.\n")
 
 
 if __name__ == '__main__':
