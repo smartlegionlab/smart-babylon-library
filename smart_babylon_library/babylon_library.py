@@ -43,9 +43,11 @@ class BabylonLibrary:
     def get_text(self, address: str) -> str:
         parts = address.split(':')
         if len(parts) == 6:
+            # If no coordinates, return the full text
             full_text = self.generate_text(address)
             return full_text
         elif len(parts) == 8:
+            # If coordinates are provided, return a substring
             full_text = self.generate_text(':'.join(parts[:6]))
             start = int(parts[6])
             end = int(parts[7])
@@ -90,19 +92,7 @@ class BabylonLibrary:
                 return address_with_coords, (start_index, end_index)
         return None, None
 
-    def __iter__(self):
-        self.current_address = self.generate_address_with_pattern(
-            {"room": 1, "wall": 1, "shelf": 1, "volume": 1, "book": 1, "page": 1}
-        )
-        return self
-
-    def __next__(self) -> Tuple[str, str]:
-        address = self.current_address
-        text = self.get_text(address)
-        self.current_address = self._generate_next_address(self.current_address)
-        return address, text
-
-    def _generate_next_address(self, current_address: str) -> str:
+    def generate_next_address(self, current_address: str) -> str:
         parts = current_address.split(':')
         room = int(parts[0].replace("Room", ""))
         wall = int(parts[1].replace("Wall", ""))
@@ -132,7 +122,7 @@ class BabylonLibrary:
 
         return f"Room{room}:Wall{wall}:Shelf{shelf}:Volume{volume}:Book{book}:Page{page}"
 
-    def _generate_previous_address(self, current_address: str) -> str:
+    def generate_previous_address(self, current_address: str) -> str:
         parts = current_address.split(':')
         room = int(parts[0].replace("Room", ""))
         wall = int(parts[1].replace("Wall", ""))
@@ -163,26 +153,47 @@ class BabylonLibrary:
         return f"Room{room}:Wall{wall}:Shelf{shelf}:Volume{volume}:Book{book}:Page{page}"
 
 
+class BabylonLibraryIterator:
+    def __init__(self, library: BabylonLibrary, start_address: Optional[str] = None):
+        self.library = library
+        self.current_address = start_address or library.generate_address_with_pattern(
+            {"room": 1, "wall": 1, "shelf": 1, "volume": 1, "book": 1, "page": 1}
+        )
+
+    def __iter__(self):
+        return self
+
+    def __next__(self) -> Tuple[str, str]:
+        address = self.current_address
+        text = self.library.get_text(address)
+        self.current_address = self.library.generate_next_address(self.current_address)
+        return address, text
+
+
 def main():
     library = BabylonLibrary()
 
+    # Example 1: Get text by address
     address = "Room1:Wall1:Shelf1:Volume1:Book1:Page1"
     text = library.get_text(address)
     print(f"Text at address {address}:\n{text}\n")
 
+    # Example 2: Get text by address with coordinates
     address_with_coords = "Room1:Wall1:Shelf1:Volume1:Book1:Page1:10:20"
     partial_text = library.get_text(address_with_coords)
     print(f"Text at address {address_with_coords}:\n{partial_text}\n")
 
-    target_text = "xx"
+    # Example 3: Search for text
+    target_text = "xxx"
     found_address, found_coords = library.search_for_text_with_pattern(target_text, max_attempts=1000)
     if found_address:
         print(f"Text '{target_text}' found at address {found_address}:\n{library.get_text(found_address)}\n")
     else:
         print(f"Text '{target_text}' not found in 1000 attempts.\n")
 
-    print("Let's start iterating on the library:")
-    iterator = iter(library)
+    # Example 4: Iterate using the iterator
+    print("Iterating through the library:")
+    iterator = BabylonLibraryIterator(library)
     for _ in range(5):
         address, text = next(iterator)
         print(f"Address: {address}\nText: {text[:50]}...\n")
