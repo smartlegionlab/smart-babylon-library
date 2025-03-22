@@ -1,17 +1,10 @@
-# --------------------------------------------------------
-# Licensed under the terms of the BSD 3-Clause License
-# (see LICENSE for details).
-# Copyright © 2018-2025, A.A Suvorov
-# All rights reserved.
-# --------------------------------------------------------
-# https://github.com/smartlegionlab/
-# --------------------------------------------------------
 import hashlib
 import random
 import string
 from typing import Optional, Dict, Tuple
 
-from smart_babylon_library.config import RU
+
+RU = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
 
 
 class BabylonLibrary:
@@ -48,12 +41,28 @@ class BabylonLibrary:
         return ''.join(text)
 
     def get_text(self, address: str) -> str:
-        return self.generate_text(address)
+        parts = address.split(':')
+        if len(parts) == 6:
+            full_text = self.generate_text(address)
+            return full_text
+        elif len(parts) == 8:
+            full_text = self.generate_text(':'.join(parts[:6]))
+            start = int(parts[6])
+            end = int(parts[7])
+            if start > end:
+                start = 0
+            if end > self.page_length:
+                end = self.page_length
+            return full_text[start:end]
+        else:
+            raise ValueError("Incorrect address format.")
 
     def generate_random_address(self) -> str:
         return self.generate_address_with_pattern()
 
-    def generate_address_with_pattern(self, pattern: Optional[Dict[str, int]] = None) -> str:
+    def generate_address_with_pattern(
+        self, pattern: Optional[Dict[str, int]] = None, coordinates: Optional[Tuple[int, int]] = None
+    ) -> str:
         if pattern is None:
             pattern = {}
         room = pattern.get("room", random.randint(1, self.max_rooms))
@@ -62,16 +71,23 @@ class BabylonLibrary:
         volume = pattern.get("volume", random.randint(1, self.max_volumes))
         book = pattern.get("book", random.randint(1, self.max_books))
         page = pattern.get("page", random.randint(1, self.max_pages))
-        return f"Room{room}:Wall{wall}:Shelf{shelf}:Volume{volume}:Book{book}:Page{page}"
+        address = f"Room{room}:Wall{wall}:Shelf{shelf}:Volume{volume}:Book{book}:Page{page}"
+        if coordinates:
+            start, end = coordinates
+            address += f":{start}:{end}"
+        return address
 
     def search_for_text_with_pattern(
         self, target_text: str, pattern: Optional[Dict[str, int]] = None, max_attempts: int = 1000000
-    ) -> Tuple[Optional[str], Optional[str]]:
+    ) -> Tuple[Optional[str], Optional[Tuple[int, int]]]:
         for _ in range(max_attempts):
             address = self.generate_address_with_pattern(pattern)
             text = self.get_text(address)
-            if target_text in text:
-                return address, text
+            start_index = text.find(target_text)
+            if start_index != -1:
+                end_index = start_index + len(target_text)
+                address_with_coords = f"{address}:{start_index}:{end_index}"
+                return address_with_coords, (start_index, end_index)
         return None, None
 
     def __iter__(self):
@@ -154,33 +170,22 @@ def main():
     text = library.get_text(address)
     print(f"Text at address {address}:\n{text}\n")
 
-    target_text = "xxx"
-    found_address, found_text = library.search_for_text_with_pattern(target_text, max_attempts=1000)
+    address_with_coords = "Room1:Wall1:Shelf1:Volume1:Book1:Page1:10:20"
+    partial_text = library.get_text(address_with_coords)
+    print(f"Text at address {address_with_coords}:\n{partial_text}\n")
+
+    target_text = "xx"
+    found_address, found_coords = library.search_for_text_with_pattern(target_text, max_attempts=1000)
     if found_address:
-        print(f"Text '{target_text}' found at address {found_address}:\n{found_text}\n")
+        print(f"Text '{target_text}' found at address {found_address}:\n{library.get_text(found_address)}\n")
     else:
-        print(f"Text '{target_text}' not found.\n")
+        print(f"Text '{target_text}' not found in 1000 attempts.\n")
 
     print("Let's start iterating on the library:")
     iterator = iter(library)
-    for _ in range(10):
+    for _ in range(5):
         address, text = next(iterator)
         print(f"Address: {address}\nText: {text[:50]}...\n")
-
-    print("Moving forward and backward through the library:")
-    current_address = "Room1:Wall1:Shelf1:Volume1:Book1:Page1"
-
-    print("Moving forward:")
-    for _ in range(5):
-        current_address = library._generate_next_address(current_address)
-        text = library.get_text(current_address)
-        print(f"Address: {current_address}\nText: {text[:50]}...\n")
-
-    print("Moving back:")
-    for _ in range(3):
-        current_address = library._generate_previous_address(current_address)
-        text = library.get_text(current_address)
-        print(f"Address: {current_address}\nText: {text[:50]}...\n")
 
 
 if __name__ == '__main__':
