@@ -28,8 +28,7 @@ Author and developer: ___A.A. Suvorov___
 
 # Smart Babylon Library
 
-**Smart Babylon Library** is a Python library inspired by the concept of the Babylonian Library 
-by Jorge Luis Borges and my own concept of [smart passwords](https://github.com/smartlegionlab/smartpasslib). 
+**Smart Babylon Library** is a Python library inspired by the concept of the Babylonian Library and my own concept of [smart passwords](https://github.com/smartlegionlab/smartpasslib). 
 It allows you to generate unique addresses for texts that are not physically 
 stored but can be restored using previously generated addresses. 
 This enables you to find and extract information by specified parameters without storing the texts themselves.

@@ -21,7 +21,7 @@ setup(
     version=get_version(),
     author="A.A. Suvorov",
     author_email="smartlegiondev@gmail.com",
-    description="A Python library inspired by the Babylonian Library concept.",
+    description="A Python library for creating and manipulating text libraries, inspired by the Library of Babel concept and my own concept of Smart Passwords.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/smartlegionlab/smart_babylon_library",
