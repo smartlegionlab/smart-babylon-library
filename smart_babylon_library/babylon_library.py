@@ -2,6 +2,7 @@ import hashlib
 import random
 import string
 from typing import Optional, Dict, Tuple
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
 RU = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
@@ -152,6 +153,30 @@ class BabylonLibrary:
 
         return f"Room{room}:Wall{wall}:Shelf{shelf}:Volume{volume}:Book{book}:Page{page}"
 
+    def search_for_text_with_pattern_parallel(
+            self, target_text: str, pattern: Optional[Dict[str, int]] = None, max_attempts: int = 1000000,
+            num_threads: int = 4
+    ) -> Tuple[Optional[str], Optional[Tuple[int, int]]]:
+
+        def search_task():
+            address = self.generate_address_with_pattern(pattern)
+            text = self.get_text(address)
+            start_index = text.find(target_text)
+            if start_index != -1:
+                return address, (start_index, start_index + len(target_text))
+            return None
+
+        with ThreadPoolExecutor(max_workers=num_threads) as executor:
+            futures = [executor.submit(search_task) for _ in range(max_attempts)]
+            for future in as_completed(futures):
+                result = future.result()
+                if result:
+                    address, coords = result
+                    address_with_coords = f"{address}:{coords[0]}:{coords[1]}"
+                    return address_with_coords, coords
+
+        return None, None
+
 
 class BabylonLibraryIterator:
     def __init__(self, library: BabylonLibrary, start_address: Optional[str] = None):
@@ -197,6 +222,15 @@ def main():
     for _ in range(5):
         address, text = next(iterator)
         print(f"Address: {address}\nText: {text[:50]}...\n")
+
+    # Example: Parallel search
+    target_text = "xxx"
+    found_address, found_coords = library.search_for_text_with_pattern_parallel(target_text, max_attempts=1000,
+                                                                                num_threads=4)
+    if found_address:
+        print(f"Text '{target_text}' found at address {found_address}:\n{library.get_text(found_address)}\n")
+    else:
+        print(f"Text '{target_text}' not found in 1000 attempts.\n")
 
 
 if __name__ == '__main__':
