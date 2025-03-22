@@ -90,7 +90,7 @@ def babylon_library_with_books():
         print(f"Added book '{book['title']}' at address {address}")
 
     # Search for text in the library
-    target_text = "hello"
+    target_text = "xxx"
     result = library.search_in_library(target_text)
     if result:
         address, start, end = result
@@ -102,8 +102,8 @@ def babylon_library_with_books():
     print("\nIterating through the library:")
     for address, title in library:
         print(f"Address: {address}, Title: {title}")
-        print('-' * 50)
         print(library.get_text(address))
+        print('-' * 50)
 
 
 def main():

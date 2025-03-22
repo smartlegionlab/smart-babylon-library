@@ -36,11 +36,19 @@ class BabylonLibraryWithBooks:
 
     def generate_word(self, min_length: int = 1, max_length: int = 10) -> str:
         length = random.randint(min_length, max_length)
-        if random.random() < 0.95:
-            charset = ''.join([c for c in self.charset if c.isalpha()])
+
+        first_char = random.choice(self.charset)
+
+        if first_char.isalpha():
+            if first_char in "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ":
+                charset = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
+            else:
+                charset = string.ascii_letters
         else:
-            charset = ''.join([c for c in self.charset if c.isdigit()])
-        return ''.join(random.choice(charset) for _ in range(length))
+            charset = string.digits
+
+        word = first_char + ''.join(random.choice(charset) for _ in range(length - 1))
+        return word
 
     def generate_sentence(self) -> str:
         sentence_length = random.randint(5, 20)

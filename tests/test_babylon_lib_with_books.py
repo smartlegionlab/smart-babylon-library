@@ -1,18 +1,41 @@
+import string
+
 from smart_babylon_library.babylon_lib_with_books import BabylonLibraryWithBooks
+
+RU = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
 
 
 def test_babylon_lib_with_books_generate_word():
     library = BabylonLibraryWithBooks()
     word = library.generate_word()
+
     assert isinstance(word, str)
     assert 1 <= len(word) <= 10
+
+    if word[0] in RU:
+        assert all(c in RU for c in word)
+    elif word[0] in string.ascii_letters:
+        assert all(c in string.ascii_letters for c in word)
+    else:
+        assert all(c in string.digits for c in word)
 
 
 def test_babylon_lib_with_books_generate_sentence():
     library = BabylonLibraryWithBooks()
     sentence = library.generate_sentence()
+
     assert isinstance(sentence, str)
     assert sentence.rstrip()[-1] in [".", "!", "?"]
+
+    words = sentence.rstrip()[:-1].split()
+
+    for word in words:
+        if word[0] in RU:
+            assert all(c in RU for c in word)
+        elif word[0] in string.ascii_letters:
+            assert all(c in string.ascii_letters for c in word)
+        else:
+            assert all(c in string.digits for c in word)
 
 
 def test_babylon_lib_with_books_generate_page():
