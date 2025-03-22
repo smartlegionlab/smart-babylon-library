@@ -355,7 +355,7 @@ Execution time: 0.138171 seconds
 - `pip install setuptools twine wheel`
 - `pip install build`
 - `pip install --upgrade pip`
-- `python -m build` or `python setup.py sdist bdist_wheel`
+- `python -m build`
 - `twine upload dist/*`
 
 ### Tests:

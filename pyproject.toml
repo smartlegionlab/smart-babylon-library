@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smart_babylon_library"
+version = "0.4.3"
+description = "A Python library for creating and manipulating text libraries, inspired by the Library of Babel concept and my own concept of Smart Passwords."
+authors = [
+    { name = "A.A. Suvorov", email = "smartlegiondev@gmail.com" }
+]
+license = "BSD-3-Clause"
+readme = "README.md"
+requires-python = ">=3.6"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/smartlegionlab/smart_babylon_library"
+
+[tool.setuptools.dynamic]
+version = { attr = "smart_babylon_library.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["smart_babylon_library"]
