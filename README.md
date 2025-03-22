@@ -1,4 +1,4 @@
-# Smart Babylon Library <sup>v0.3.1</sup>
+# Smart Babylon Library <sup>v0.4.1</sup>
 
 ***
 
@@ -357,6 +357,12 @@ Execution time: 0.138171 seconds
 - `pip install --upgrade pip`
 - `python setup.py sdist bdist_wheel`
 - `twine upload dist/*`
+
+### Tests:
+
+- `pip install pytest`
+
+
 
 ***
 
