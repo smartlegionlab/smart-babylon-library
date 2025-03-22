@@ -13,7 +13,7 @@ from .tools import timeit
 from .babylon_library import BabylonLibrary, BabylonLibraryIterator
 from .babylon_lib_with_books import BabylonLibraryWithBooks
 
-__version__ = '0.4.2'
+__version__ = '0.4.3'
 __author__ = 'A.A. Suvorov'
 __all__ = [
     "LibraryStructure",

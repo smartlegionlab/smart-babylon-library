@@ -1,4 +1,4 @@
-# Smart Babylon Library <sup>v0.4.2</sup>
+# Smart Babylon Library <sup>v0.4.3</sup>
 
 ***
 

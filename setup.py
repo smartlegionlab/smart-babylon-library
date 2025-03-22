@@ -29,6 +29,7 @@ setup(
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
+        "License :: OSI Approved :: BSD License",
     ],
     python_requires=">=3.6",
     install_requires=[],
