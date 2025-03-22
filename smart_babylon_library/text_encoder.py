@@ -17,8 +17,8 @@ class TextEncoder:
         self.charset_length = len(self.charset)
         self.base62_chars = string.digits + string.ascii_letters
 
-    def _sanitize_text(self, text):
-        return ''.join(c for c in text if c in self.charset)
+    def _sanitize_text(self, text: str) -> str:
+        return ''.join(c for c in text if c in self.charset and c not in "!@#")
 
     def _text_to_num(self, text):
         number = 0

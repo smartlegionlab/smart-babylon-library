@@ -1,4 +1,4 @@
-# Smart Babylon Library <sup>v0.4.1</sup>
+# Smart Babylon Library <sup>v0.4.2</sup>
 
 ***
 
@@ -353,15 +353,18 @@ Execution time: 0.138171 seconds
 ## Information for developers:
 
 - `pip install setuptools twine wheel`
+- `pip install build`
 - `pip install --upgrade pip`
-- `python setup.py sdist bdist_wheel`
+- `python -m build` or `python setup.py sdist bdist_wheel`
 - `twine upload dist/*`
 
 ### Tests:
 
 - `pip install pytest`
-
-
+- `pip install pytest-cov`
+- `pip install -e .`
+- `pytest tests/`
+- `pytest --cov=smart_babylon_library --cov-report=html`
 
 ***
 

@@ -75,7 +75,7 @@ class BabylonLibraryWithBooks:
         wall = random.randint(1, self.max_walls)
         shelf = random.randint(1, self.max_shelves)
         volume = random.randint(1, self.max_volumes)
-        book_num = random.randint(1, self.max_books)
+        book_num = len(self.books)
         return f"Room{room}:Wall{wall}:Shelf{shelf}:Volume{volume}:Book{book_num}"
 
     def get_text(self, address: str, start: Optional[int] = None, end: Optional[int] = None) -> str:
