@@ -1,3 +1,11 @@
+# --------------------------------------------------------
+# Licensed under the terms of the BSD 3-Clause License
+# (see LICENSE for details).
+# Copyright © 2018-2025, A.A Suvorov
+# All rights reserved.
+# --------------------------------------------------------
+# https://github.com/smartlegionlab/
+# --------------------------------------------------------
 import random
 import string
 from typing import List, Optional, Dict, Tuple, Iterator
@@ -97,34 +105,3 @@ class BabylonLibraryWithBooks:
         title = self.books[self.current_index]["title"]
         self.current_index += 1
         return address, title
-
-
-def main():
-    # Create the library
-    library = BabylonLibraryWithBooks()
-
-    # Generate and add 5 books to the library
-    for _ in range(5):
-        book = library.generate_book(num_pages=10)
-        address = library.add_book_to_library(book)
-        print(f"Added book '{book['title']}' at address {address}")
-
-    # Search for text in the library
-    target_text = "hello"
-    result = library.search_in_library(target_text)
-    if result:
-        address, start, end = result
-        print(f"Text '{target_text}' found at address {address}, position {start}-{end}.")
-    else:
-        print(f"Text '{target_text}' not found in the library.")
-
-    # Iterate over the library
-    print("\nIterating through the library:")
-    for address, title in library:
-        print(f"Address: {address}, Title: {title}")
-        print('-' * 50)
-        # print(library.get_text(address))
-
-
-if __name__ == '__main__':
-    main()
