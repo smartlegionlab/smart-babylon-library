@@ -1,6 +1,6 @@
 import random
 import string
-from typing import List, Optional, Dict, Tuple, Iterator
+from typing import List, Optional, Dict, Tuple
 
 
 class BabylonLibraryWithBooks:
@@ -101,6 +101,15 @@ class BabylonLibraryWithBooks:
         else:
             raise ValueError("Incorrect address format.")
 
+    def get_book_title(self, address: str) -> str:
+        parts = address.split(':')
+        if len(parts) == 5:
+            seed = address
+            book = self.generate_book(seed, self.max_pages)
+            return book["title"]
+        else:
+            raise ValueError("Incorrect address format for getting book title.")
+
     def search_in_library(self, target_text: str, max_attempts: int = 1000000) -> Optional[Tuple[str, int, int]]:
         for _ in range(max_attempts):
             address = self.generate_random_address()
@@ -128,39 +137,50 @@ class BabylonLibraryWithBooks:
         page = random.randint(1, self.max_pages)
         return f"Room{room}:Wall{wall}:Shelf{shelf}:Volume{volume}:Book{book}:Page{page}"
 
-    def __iter__(self) -> Iterator[Tuple[str, str]]:
-        self.current_room = 1
-        self.current_wall = 1
-        self.current_shelf = 1
-        self.current_volume = 1
-        self.current_book = 1
-        self.current_page = 1
+
+class BabylonLibraryIterator:
+    def __init__(self, library: BabylonLibraryWithBooks, start_address: Optional[str] = None):
+        self.library = library
+        self.current_address = start_address or "Room1:Wall1:Shelf1:Volume1:Book1:Page1"
+
+    def __iter__(self):
         return self
 
-    def __next__(self) -> Tuple[str, str]:
-        if self.current_page > self.max_pages:
-            self.current_page = 1
-            self.current_book += 1
-            if self.current_book > self.max_books:
-                self.current_book = 1
-                self.current_volume += 1
-                if self.current_volume > self.max_volumes:
-                    self.current_volume = 1
-                    self.current_shelf += 1
-                    if self.current_shelf > self.max_shelves:
-                        self.current_shelf = 1
-                        self.current_wall += 1
-                        if self.current_wall > self.max_walls:
-                            self.current_wall = 1
-                            self.current_room += 1
-                            if self.current_room > self.max_rooms:
+    def __next__(self) -> Tuple[str, str, str]:
+        parts = self.current_address.split(':')
+        room = int(parts[0].replace("Room", ""))
+        wall = int(parts[1].replace("Wall", ""))
+        shelf = int(parts[2].replace("Shelf", ""))
+        volume = int(parts[3].replace("Volume", ""))
+        book = int(parts[4].replace("Book", ""))
+        page = int(parts[5].replace("Page", ""))
+
+        book_address = f"Room{room}:Wall{wall}:Shelf{shelf}:Volume{volume}:Book{book}"
+        title = self.library.get_book_title(book_address)
+
+        text = self.library.get_text(self.current_address)
+
+        page += 1
+        if page > self.library.max_pages:
+            page = 1
+            book += 1
+            if book > self.library.max_books:
+                book = 1
+                volume += 1
+                if volume > self.library.max_volumes:
+                    volume = 1
+                    shelf += 1
+                    if shelf > self.library.max_shelves:
+                        shelf = 1
+                        wall += 1
+                        if wall > self.library.max_walls:
+                            wall = 1
+                            room += 1
+                            if room > self.library.max_rooms:
                                 raise StopIteration
 
-        address = f"Room{self.current_room}:Wall{self.current_wall}:Shelf{self.current_shelf}:Volume{self.current_volume}:Book{self.current_book}:Page{self.current_page}"
-        book = self.generate_book(f"Room{self.current_room}:Wall{self.current_wall}:Shelf{self.current_shelf}:Volume{self.current_volume}:Book{self.current_book}", self.max_pages)
-        page_text = book["pages"][self.current_page - 1]
-        self.current_page += 1
-        return address, page_text
+        self.current_address = f"Room{room}:Wall{wall}:Shelf{shelf}:Volume{volume}:Book{book}:Page{page}"
+        return self.current_address, title, text
 
 
 def main():
@@ -170,13 +190,16 @@ def main():
     book_text = library.get_text(book_address)
     print("Text of the entire book:", book_text[:100])
 
+    title = library.get_book_title(book_address)
+    print("Title of the book:", title)
+
     page_address = "Room1:Wall1:Shelf1:Volume1:Book1:Page1"
     page_text = library.get_text(page_address)
-    print("Page text1:", page_text[:100])
+    print("Page text 1:", page_text[:100])
 
     slice_address = "Room1:Wall1:Shelf1:Volume1:Book1:Page1:10:50"
     slice_text = library.get_text(slice_address)
-    print("Slicing text on a page 1:", slice_text)
+    print("Slicing text on page 1:", slice_text)
 
     title_address = library.search_in_titles("а")
     if title_address:
@@ -187,8 +210,9 @@ def main():
         address, start, end = result
         print(f"Found at address: {address}, с {start} по {end}")
 
-    for address, text in library:
-        print(f"Address: {address}, Text: {text[:50]}...")
+    iterator = BabylonLibraryIterator(library)
+    for address, title, text in iterator:
+        print(f"Address: {address}, Title: {title}, Text: {text[:50]}...")
 
 
 if __name__ == '__main__':
