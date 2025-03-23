@@ -6,8 +6,11 @@
 # --------------------------------------------------------
 # https://github.com/smartlegionlab/
 # --------------------------------------------------------
+import os
 import random
+import re
 import string
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import List, Optional, Dict, Tuple, Union
 
 from smart_babylon_library.config import RU
@@ -147,6 +150,41 @@ class SmartBabylonLibrary:
         book = random.randint(1, self.max_books)
         page = random.randint(1, self.max_pages)
         return f"Room{room}:Wall{wall}:Shelf{shelf}:Volume{volume}:Book{book}:Page{page}"
+
+    def search_in_library_parallel(
+            self, target_text: str, max_attempts: int = 1000000, num_threads: Optional[int] = None
+    ) -> Optional[Tuple[str, int, int]]:
+        if num_threads is None:
+            num_threads = os.cpu_count() or 4
+            print(f"Using {num_threads} threads based on available CPU cores.")
+
+        attempts_per_thread = max_attempts // num_threads
+
+        def search_task(attempts: int):
+            for _ in range(attempts):
+                address = self.generate_random_address()
+                text = self.get_text(address)
+
+                pattern = re.compile(r'\b' + re.escape(target_text) + r'\b')
+                match = pattern.search(text)
+
+                if match:
+                    start_index = match.start()
+                    end_index = match.end()
+                    print(f"Found '{target_text}' at address: {address}, positions: {start_index}-{end_index}")
+                    return address, start_index, end_index
+            return None
+
+        with ThreadPoolExecutor(max_workers=num_threads) as executor:
+            futures = [executor.submit(search_task, attempts_per_thread) for _ in range(num_threads)]
+
+            for future in as_completed(futures):
+                result = future.result()
+                if result:
+                    return result
+
+        print(f"'{target_text}' not found after {max_attempts} attempts.")
+        return None
 
 
 class SmartBabylonLibraryIterator:
