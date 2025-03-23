@@ -12,8 +12,7 @@ import string
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Optional, Dict, Tuple
 
-
-RU = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
+from smart_babylon_library.config import RU
 
 
 class BabylonLibrary:
