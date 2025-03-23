@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "smart_babylon_library"
-version = "0.5.0"
+version = "0.6.1"
 description = "A Python library for creating and manipulating text libraries, inspired by the Library of Babel concept and my own concept of Smart Passwords."
 authors = [
     { name = "A.A. Suvorov", email = "smartlegiondev@gmail.com" }

@@ -1,13 +1,22 @@
+# --------------------------------------------------------
+# Licensed under the terms of the BSD 3-Clause License
+# (see LICENSE for details).
+# Copyright © 2018-2025, A.A Suvorov
+# All rights reserved.
+# --------------------------------------------------------
+# https://github.com/smartlegionlab/
+# --------------------------------------------------------
 import random
 import string
-from typing import List, Optional, Dict, Tuple
+from typing import List, Optional, Dict, Tuple, Union
+
+from smart_babylon_library.config import RU
 
 
-class BabylonLibraryWithBooks:
+class SmartBabylonLibrary:
     def __init__(
         self,
-        charset: str = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ" +
-                       string.ascii_letters + string.digits,
+        charset: str = RU + string.ascii_letters + string.digits,
         page_length: int = 3200,
         max_rooms: int = 100,
         max_walls: int = 6,
@@ -32,12 +41,12 @@ class BabylonLibraryWithBooks:
         first_char = random.choice(self.charset)
 
         if first_char.isalpha():
-            if first_char in "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ":
-                charset = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
+            if first_char in RU:
+                charset = RU
             else:
                 charset = string.ascii_letters
         else:
-            charset = string.digits
+            charset = string.digits + " "
 
         word = first_char + ''.join(random.choice(charset) for _ in range(length - 1))
         return word
@@ -66,7 +75,7 @@ class BabylonLibraryWithBooks:
             sentence = self.generate_sentence(seed).strip()
             return sentence[:-1]
 
-    def generate_book(self, seed: str, num_pages: int) -> Dict[str, List[str]]:
+    def generate_book(self, seed: str, num_pages: int) -> Dict[str, Union[str, List[str]]]:
         title = self.generate_book_title(seed + "title")
         pages = [self.generate_page(seed + "page" + str(i)) for i in range(num_pages)]
         return {"title": title, "pages": pages}
@@ -95,6 +104,8 @@ class BabylonLibraryWithBooks:
             book = self.generate_book(seed, self.max_pages)
             if 0 <= page_num < len(book["pages"]):
                 page_text = book["pages"][page_num]
+                if start < 0 or end > len(page_text):
+                    raise ValueError("Slice out of range.")
                 return page_text[start:end]
             else:
                 raise ValueError("Page number out of range.")
@@ -106,7 +117,7 @@ class BabylonLibraryWithBooks:
         if len(parts) == 5:
             seed = address
             book = self.generate_book(seed, self.max_pages)
-            return book["title"]
+            return str(book["title"])
         else:
             raise ValueError("Incorrect address format for getting book title.")
 
@@ -138,8 +149,8 @@ class BabylonLibraryWithBooks:
         return f"Room{room}:Wall{wall}:Shelf{shelf}:Volume{volume}:Book{book}:Page{page}"
 
 
-class BabylonLibraryIterator:
-    def __init__(self, library: BabylonLibraryWithBooks, start_address: Optional[str] = None):
+class SmartBabylonLibraryIterator:
+    def __init__(self, library: SmartBabylonLibrary, start_address: Optional[str] = None):
         self.library = library
         self.current_address = start_address or "Room1:Wall1:Shelf1:Volume1:Book1:Page1"
 
@@ -181,39 +192,3 @@ class BabylonLibraryIterator:
 
         self.current_address = f"Room{room}:Wall{wall}:Shelf{shelf}:Volume{volume}:Book{book}:Page{page}"
         return self.current_address, title, text
-
-
-def main():
-    library = BabylonLibraryWithBooks()
-
-    book_address = "Room1:Wall1:Shelf1:Volume1:Book1"
-    book_text = library.get_text(book_address)
-    print("Text of the entire book:", book_text[:100])
-
-    title = library.get_book_title(book_address)
-    print("Title of the book:", title)
-
-    page_address = "Room1:Wall1:Shelf1:Volume1:Book1:Page1"
-    page_text = library.get_text(page_address)
-    print("Page text 1:", page_text[:100])
-
-    slice_address = "Room1:Wall1:Shelf1:Volume1:Book1:Page1:10:50"
-    slice_text = library.get_text(slice_address)
-    print("Slicing text on page 1:", slice_text)
-
-    title_address = library.search_in_titles("а")
-    if title_address:
-        print(f"Found in the title of the book: {title_address}")
-
-    result = library.search_in_library("а")
-    if result:
-        address, start, end = result
-        print(f"Found at address: {address}, с {start} по {end}")
-
-    iterator = BabylonLibraryIterator(library)
-    for address, title, text in iterator:
-        print(f"Address: {address}, Title: {title}, Text: {text[:50]}...")
-
-
-if __name__ == '__main__':
-    main()

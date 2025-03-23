@@ -11,15 +11,17 @@ from .library_structure import LibraryStructure
 from .text_encoder import TextEncoder
 from .tools import timeit
 from .babylon_library import BabylonLibrary, BabylonLibraryIterator
-from .babylon_lib_with_books import BabylonLibraryWithBooks
+from .smart_babylon_library import SmartBabylonLibrary, SmartBabylonLibraryIterator
+from .config import *
 
-__version__ = '0.5.0'
+__version__ = '0.6.1'
 __author__ = 'A.A. Suvorov'
 __all__ = [
     "LibraryStructure",
     "TextEncoder",
     "timeit",
     "BabylonLibrary",
-    "BabylonLibraryWithBooks",
-    "BabylonLibraryIterator"
+    "SmartBabylonLibrary",
+    "BabylonLibraryIterator",
+    'SmartBabylonLibraryIterator',
 ]
