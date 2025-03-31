@@ -268,7 +268,7 @@ You can customize the library behavior by changing the parameters in the class c
 - **`library_structure.py`**: `LibraryStructure` implementation for working with library coordinates.
 - **`text_encoder.py`**: `TextEncoder` implementation for encoding and decoding texts.
 - **`config.py`**: Library configuration parameters.
-- **`tools.py`**: Helper functions (e.g., `timeit` decorator).
+- **`tools.py`**: Helper functions (e.g., `timing_decorator` decorator).
 - **`example.py`**: Example of library usage.
 
 ---

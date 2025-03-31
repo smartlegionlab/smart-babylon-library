@@ -7,10 +7,10 @@
 # https://github.com/smartlegionlab/
 # --------------------------------------------------------
 from smart_babylon_library import LibraryStructure
-from smart_babylon_library.tools import timeit
+from smart_babylon_library.tools import timing_decorator
 
 
-@timeit
+@timing_decorator
 def library_structure_example(text):
     library_structure = LibraryStructure()
     print("=== Using LibraryStructure ===")

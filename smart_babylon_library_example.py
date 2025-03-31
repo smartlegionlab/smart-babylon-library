@@ -6,11 +6,11 @@
 # --------------------------------------------------------
 # https://github.com/smartlegionlab/
 # --------------------------------------------------------
-from smart_babylon_library import timeit
+from smart_babylon_library import timing_decorator
 from smart_babylon_library.smart_babylon_library import SmartBabylonLibrary, SmartBabylonLibraryIterator
 
 
-@timeit
+@timing_decorator
 def example_get_book_text(library: SmartBabylonLibrary):
     print("\n=== Example: Get the full text of a book ===")
     book_address = "Room1:Wall1:Shelf1:Volume1:Book1"
@@ -20,7 +20,7 @@ def example_get_book_text(library: SmartBabylonLibrary):
     print(book_text[:100])
 
 
-@timeit
+@timing_decorator
 def example_get_book_title(library: SmartBabylonLibrary):
     print("\n=== Example: Get the title of a book ===")
     book_address = "Room1:Wall1:Shelf1:Volume1:Book1"
@@ -29,7 +29,7 @@ def example_get_book_title(library: SmartBabylonLibrary):
     print(f"Title of the book: {title}")
 
 
-@timeit
+@timing_decorator
 def example_get_page_text(library: SmartBabylonLibrary):
     print("\n=== Example: Get the text of a specific page ===")
     page_address = "Room1:Wall1:Shelf1:Volume1:Book1:Page1"
@@ -39,7 +39,7 @@ def example_get_page_text(library: SmartBabylonLibrary):
     print(page_text[:100])
 
 
-@timeit
+@timing_decorator
 def example_get_slice_text(library: SmartBabylonLibrary):
     print("\n=== Example: Get a slice of text from a page ===")
     slice_address = "Room1:Wall1:Shelf1:Volume1:Book1:Page1:10:50"
@@ -48,7 +48,7 @@ def example_get_slice_text(library: SmartBabylonLibrary):
     print(f"Slice of text (characters 10 to 50): {slice_text}")
 
 
-@timeit
+@timing_decorator
 def example_search_in_titles(library: SmartBabylonLibrary):
     print("\n=== Example: Search for text in book titles ===")
     target_text = "x"
@@ -60,7 +60,7 @@ def example_search_in_titles(library: SmartBabylonLibrary):
         print(f"Text '{target_text}' not found in any book title.")
 
 
-@timeit
+@timing_decorator
 def example_search_in_library(library: SmartBabylonLibrary):
     print("\n=== Example: Search for text in the library ===")
     target_text = "x"
@@ -73,7 +73,7 @@ def example_search_in_library(library: SmartBabylonLibrary):
         print(f"Text '{target_text}' not found in the library.")
 
 
-@timeit
+@timing_decorator
 def example_iterate_library(library: SmartBabylonLibrary):
     print("\n=== Example: Iterate through the library (3 steps) ===")
     iterator = SmartBabylonLibraryIterator(library)

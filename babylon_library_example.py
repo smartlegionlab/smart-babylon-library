@@ -6,10 +6,10 @@
 # --------------------------------------------------------
 # https://github.com/smartlegionlab/
 # --------------------------------------------------------
-from smart_babylon_library import timeit, BabylonLibrary, BabylonLibraryIterator
+from smart_babylon_library import timing_decorator, BabylonLibrary, BabylonLibraryIterator
 
 
-@timeit
+@timing_decorator
 def babylon_library_example():
     library = BabylonLibrary()
     print("=== Using BabylonLibrary ===")

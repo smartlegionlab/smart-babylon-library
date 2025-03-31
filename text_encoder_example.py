@@ -7,10 +7,10 @@
 # https://github.com/smartlegionlab/
 # --------------------------------------------------------
 from smart_babylon_library import TextEncoder
-from smart_babylon_library.tools import timeit
+from smart_babylon_library.tools import timing_decorator
 
 
-@timeit
+@timing_decorator
 def text_encoder_example(text):
     text_encoder = TextEncoder()
     print("=== Using TextEncoder ===")

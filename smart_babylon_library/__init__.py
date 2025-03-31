@@ -9,7 +9,7 @@
 """Smart Babylon Library"""
 from .library_structure import LibraryStructure
 from .text_encoder import TextEncoder
-from .tools import timeit
+from .tools import timing_decorator
 from .babylon_library import BabylonLibrary, BabylonLibraryIterator
 from .smart_babylon_library import SmartBabylonLibrary, SmartBabylonLibraryIterator
 from .config import *
@@ -19,7 +19,7 @@ __author__ = 'A.A. Suvorov'
 __all__ = [
     "LibraryStructure",
     "TextEncoder",
-    "timeit",
+    "timing_decorator",
     "BabylonLibrary",
     "SmartBabylonLibrary",
     "BabylonLibraryIterator",
