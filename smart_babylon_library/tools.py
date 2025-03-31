@@ -20,7 +20,7 @@ def timing_decorator(func):
         console_width = shutil.get_terminal_size().columns
         separator = '-' * console_width
         print(separator)
-        print(f"Execution time: {end_time - start_time:.6f} seconds")
+        print(f"'{func.__name__}' - Execution time: {end_time - start_time:.6f} seconds")
         print(separator)
         return result
     return wrapper
