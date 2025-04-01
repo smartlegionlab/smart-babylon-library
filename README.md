@@ -22,7 +22,7 @@ Author and developer: ___A.A. Suvorov___
 ## Acknowledgments:
 
 - Inspired by Jorge Luis Borges' concept of the Babylonian Library.
-- Built with ❤️ by [A.A. Suvorov](https://github.com/smartlegionlab).
+- Code and implementation: [A.A. Suvorov](https://github.com/smartlegionlab).
 
 ---
 
