@@ -405,7 +405,7 @@ Execution time: 0.000032 seconds
 *** End ***
 ```
 
-#### `python tlibrary_structure_example.py`:
+#### `python library_structure_example.py`:
 
 ```text
 *** Start ***
