@@ -1,7 +1,7 @@
 # Smart Babylon Library <sup>v0.5.0</sup>
 
 ***
-
+[![PyPI Downloads](https://static.pepy.tech/badge/smart-babylon-library)](https://pepy.tech/projects/smart-babylon-library)
 ![GitHub top language](https://img.shields.io/github/languages/top/smartlegionlab/smart_babylon_library)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/smartlegionlab/smart_babylon_library)](https://github.com/smartlegionlab/smart_babylon_library/)
 [![GitHub](https://img.shields.io/github/license/smartlegionlab/smart_babylon_library)](https://github.com/smartlegionlab/smart_babylon_library/blob/master/LICENSE)
