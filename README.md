@@ -1,16 +1,16 @@
-# Smart Babylon Library <sup>v0.5.0</sup>
+# Smart Babylon Library <sup>v0.6.2</sup>
 
 ***
 [![PyPI Downloads](https://static.pepy.tech/badge/smart-babylon-library)](https://pepy.tech/projects/smart-babylon-library)
-![GitHub top language](https://img.shields.io/github/languages/top/smartlegionlab/smart_babylon_library)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/smartlegionlab/smart_babylon_library)](https://github.com/smartlegionlab/smart_babylon_library/)
-[![GitHub](https://img.shields.io/github/license/smartlegionlab/smart_babylon_library)](https://github.com/smartlegionlab/smart_babylon_library/blob/master/LICENSE)
-[![GitHub Repo stars](https://img.shields.io/github/stars/smartlegionlab/smart_babylon_library?style=social)](https://github.com/smartlegionlab/smart_babylon_library/)
-[![GitHub watchers](https://img.shields.io/github/watchers/smartlegionlab/smart_babylon_library?style=social)](https://github.com/smartlegionlab/smart_babylon_library/)
-[![GitHub forks](https://img.shields.io/github/forks/smartlegionlab/smart_babylon_library?style=social)](https://github.com/smartlegionlab/smart_babylon_library/)
-[![PyPI - Downloads](https://img.shields.io/pypi/dm/smart_babylon_library?label=pypi%20downloads)](https://pypi.org/project/smart_babylon_library/)
-[![PyPI](https://img.shields.io/pypi/v/smart_babylon_library)](https://pypi.org/project/smart_babylon_library)
-[![PyPI - Format](https://img.shields.io/pypi/format/smart_babylon_library)](https://pypi.org/project/smart_babylon_library)
+![GitHub top language](https://img.shields.io/github/languages/top/smartlegionlab/smart-babylon-library)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/smartlegionlab/smart-babylon-library)](https://github.com/smartlegionlab/smart-babylon-library/)
+[![GitHub](https://img.shields.io/github/license/smartlegionlab/smart-babylon-library)](https://github.com/smartlegionlab/smart-babylon-library/blob/master/LICENSE)
+[![GitHub Repo stars](https://img.shields.io/github/stars/smartlegionlab/smart-babylon-library?style=social)](https://github.com/smartlegionlab/smart-babylon-library/)
+[![GitHub watchers](https://img.shields.io/github/watchers/smartlegionlab/smart-babylon-library?style=social)](https://github.com/smartlegionlab/smart-babylon-library/)
+[![GitHub forks](https://img.shields.io/github/forks/smartlegionlab/smart-babylon-library?style=social)](https://github.com/smartlegionlab/smart-babylon-library/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/smart-babylon-library?label=pypi%20downloads)](https://pypi.org/project/smart-babylon-library/)
+[![PyPI](https://img.shields.io/pypi/v/smart-babylon-library)](https://pypi.org/project/smart-babylon-library)
+[![PyPI - Format](https://img.shields.io/pypi/format/smart-babylon-library)](https://pypi.org/project/smart-babylon-library)
 
 ***
 
@@ -54,15 +54,15 @@ pages, and sentences, simulating a library with structured content.
 To install the library, run the following commands:
 
 ```bash
-git clone https://github.com/smartlegionlab/smart_babylon_library.git
-cd smart_babylon_library
+git clone https://github.com/smartlegionlab/smart-babylon-library.git
+cd smart-babylon-library
 pip install .
 ```
 
 or 
 
 ```bash
-pip install smart_babylon_library
+pip install smart-babylon-library
 ```
 
 ---
