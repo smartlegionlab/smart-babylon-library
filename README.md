@@ -1,4 +1,4 @@
-# Smart Babylon Library <sup>v0.6.2</sup>
+# Smart Babylon Library <sup>v0.6.3</sup>
 
 ***
 [![PyPI Downloads](https://static.pepy.tech/badge/smart-babylon-library)](https://pepy.tech/projects/smart-babylon-library)
