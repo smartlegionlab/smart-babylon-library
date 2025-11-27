@@ -5,8 +5,9 @@
 # --------------------------------------------------------
 # https://github.com/smartlegionlab
 # --------------------------------------------------------
-from .constants import DIGITS
-from .core import CharacterSet
+from smart_babylon_library.character_sets.constants import DIGITS
+from smart_babylon_library.character_sets.core import CharacterSet
+
 
 class Digits(CharacterSet):
     @property

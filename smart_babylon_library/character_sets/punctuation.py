@@ -5,8 +5,9 @@
 # --------------------------------------------------------
 # https://github.com/smartlegionlab
 # --------------------------------------------------------
-from .constants import PUNCTUATION_MARKS
-from .core import CharacterSet
+from smart_babylon_library.character_sets.constants import PUNCTUATION_MARKS
+from smart_babylon_library.character_sets.core import CharacterSet
+
 
 class Punctuation(CharacterSet):
     @property

@@ -5,8 +5,9 @@
 # --------------------------------------------------------
 # https://github.com/smartlegionlab
 # --------------------------------------------------------
-from .coordinates import LibraryCoordinates
-from .book import LibraryBook, LibraryPage
+from smart_babylon_library.library.book import LibraryBook, LibraryPage
+from smart_babylon_library.library.coordinates import LibraryCoordinates
+
 
 class SmartBabylonLibrary:
     def get_book(self, floor: int, room: int, cabinet: int, shelf: int, book_number: int):

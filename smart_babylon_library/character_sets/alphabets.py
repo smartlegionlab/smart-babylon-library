@@ -5,8 +5,10 @@
 # --------------------------------------------------------
 # https://github.com/smartlegionlab
 # --------------------------------------------------------
-from .constants import CYRILLIC_UPPERCASE, CYRILLIC_LOWERCASE, LATIN_UPPERCASE, LATIN_LOWERCASE
-from .core import CharacterSet
+from smart_babylon_library.character_sets.constants import CYRILLIC_UPPERCASE, CYRILLIC_LOWERCASE, LATIN_UPPERCASE, \
+    LATIN_LOWERCASE
+from smart_babylon_library.character_sets.core import CharacterSet
+
 
 class CyrillicAlphabet(CharacterSet):
     @property

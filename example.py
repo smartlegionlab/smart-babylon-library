@@ -1,7 +1,8 @@
 """
 Example usage of Smart Babylon Library
 """
-from smart_babylon_library import SmartBabylonLibrary
+from smart_babylon_library.library.core import SmartBabylonLibrary
+
 
 def main():
     print("=== Smart Babylon Library Demo ===\n")

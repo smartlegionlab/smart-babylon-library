@@ -6,14 +6,17 @@
 # https://github.com/smartlegionlab
 # --------------------------------------------------------
 import json
-from .coordinates import LibraryCoordinates
-from .generator import DeterministicGenerator
+
+from smart_babylon_library.library.coordinates import LibraryCoordinates
+from smart_babylon_library.library.generator import DeterministicGenerator
+
 
 class LibraryBook:
     def __init__(self, coordinates):
         self.coordinates = coordinates
         self._generator = DeterministicGenerator()
         self._title = None
+        self._max_pages = None
 
     @property
     def title(self) -> str:
@@ -21,11 +24,17 @@ class LibraryBook:
             self._title = self._generator.generate_book_title(self.coordinates)
         return self._title
 
+    @property
+    def max_pages(self) -> int:
+        if self._max_pages is None:
+            self._max_pages = self._generator.get_max_pages_for_book(self.coordinates)
+        return self._max_pages
+
     def get_page(self, page_number: int):
         if page_number < 0:
             raise ValueError("Page number must be non-negative")
-        if page_number > self._generator.MAX_PAGES_PER_BOOK:
-            raise ValueError(f"Page number cannot exceed {self._generator.MAX_PAGES_PER_BOOK}")
+        if page_number > self.max_pages:
+            raise ValueError(f"Page number cannot exceed {self.max_pages}")
 
         page_coordinates = LibraryCoordinates(
             self.coordinates.floor, self.coordinates.room,
@@ -38,7 +47,7 @@ class LibraryBook:
         return {
             'coordinates': self.coordinates.to_dict(),
             'title': self.title,
-            'page_count': self._generator.MAX_PAGES_PER_BOOK
+            'page_count': self.max_pages
         }
 
     def to_json(self) -> str:
