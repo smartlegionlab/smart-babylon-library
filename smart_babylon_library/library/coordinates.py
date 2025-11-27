@@ -55,4 +55,5 @@ class LibraryCoordinates:
         return cls.from_dict(json.loads(json_str))
 
     def __str__(self):
-        return f"Floor{self.floor}/Room{self.room}/Cabinet{self.cabinet}/Shelf{self.shelf}/Book{self.book}/Page{self.page}"
+        return (f"Floor{self.floor}/Room{self.room}/Cabinet{self.cabinet}/"
+                f"Shelf{self.shelf}/Book{self.book}/Page{self.page}")

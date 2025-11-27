@@ -9,12 +9,14 @@ import json
 
 from smart_babylon_library.library.coordinates import LibraryCoordinates
 from smart_babylon_library.library.generator import DeterministicGenerator
+from smart_babylon_library.library.config import LibraryConfig
 
 
 class LibraryBook:
-    def __init__(self, coordinates):
+    def __init__(self, coordinates, config: LibraryConfig = None):
         self.coordinates = coordinates
-        self._generator = DeterministicGenerator()
+        self.config = config or LibraryConfig()
+        self._generator = DeterministicGenerator(self.config)
         self._title = None
         self._max_pages = None
 
@@ -33,15 +35,15 @@ class LibraryBook:
     def get_page(self, page_number: int):
         if page_number < 0:
             raise ValueError("Page number must be non-negative")
-        if page_number > self.max_pages:
-            raise ValueError(f"Page number cannot exceed {self.max_pages}")
+        if page_number >= self.max_pages:
+            raise ValueError(f"Page number cannot exceed {self.max_pages - 1}")
 
         page_coordinates = LibraryCoordinates(
             self.coordinates.floor, self.coordinates.room,
             self.coordinates.cabinet, self.coordinates.shelf,
             self.coordinates.book, page_number
         )
-        return LibraryPage(page_coordinates)
+        return LibraryPage(page_coordinates, self.config)
 
     def to_dict(self) -> dict:
         return {
@@ -61,10 +63,12 @@ class LibraryBook:
         title = self.title[:30] + '...' if len(self.title) > 30 else self.title
         return f"Book '{title}'"
 
+
 class LibraryPage:
-    def __init__(self, coordinates):
+    def __init__(self, coordinates, config: LibraryConfig = None):
         self.coordinates = coordinates
-        self._generator = DeterministicGenerator()
+        self.config = config or LibraryConfig()
+        self._generator = DeterministicGenerator(self.config)
         self._content = None
 
     @property
@@ -88,4 +92,5 @@ class LibraryPage:
         return json.dumps(self.to_dict(), ensure_ascii=False, indent=2)
 
     def __str__(self):
-        return f"Page {self.page_number}: {self.content[:50]}..." if len(self.content) > 50 else f"Page {self.page_number}: {self.content}"
+        content_preview = self.content[:50] + '...' if len(self.content) > 50 else self.content
+        return f"Page {self.page_number}: {content_preview}"
