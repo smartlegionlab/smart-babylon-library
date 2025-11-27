@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "smart-babylon-library"
-version = "0.6.5"
-description = "A Python library for creating and manipulating text libraries, inspired by the Library of Babel concept and my own concept of Smart Passwords."
+version = "1.0.0"
+description = "Smart Babylon Library."
 authors = [
-    { name = "A.A. Suvorov", email = "smartlegiondev@gmail.com" }
+    { name = "Alexander Suvorov", email = "smartlegionlab@gmail.com" }
 ]
 license = "BSD-3-Clause"
 readme = "README.md"
@@ -26,4 +26,3 @@ version = { attr = "smart_babylon_library.__version__" }
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["smart_babylon_library*"]
