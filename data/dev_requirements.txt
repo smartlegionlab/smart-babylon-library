@@ -1,6 +1,0 @@
-setuptools
-twine
-wheel
-build
-pytest
-pytest-cov
