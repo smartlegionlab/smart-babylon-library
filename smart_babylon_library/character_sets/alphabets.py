@@ -5,8 +5,12 @@
 # --------------------------------------------------------
 # https://github.com/smartlegionlab
 # --------------------------------------------------------
-from smart_babylon_library.character_sets.constants import CYRILLIC_UPPERCASE, CYRILLIC_LOWERCASE, LATIN_UPPERCASE, \
+from smart_babylon_library.character_sets.constants import (
+    CYRILLIC_UPPERCASE,
+    CYRILLIC_LOWERCASE,
+    LATIN_UPPERCASE,
     LATIN_LOWERCASE
+)
 from smart_babylon_library.character_sets.core import CharacterSet
 
 
