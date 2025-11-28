@@ -1,6 +1,12 @@
-# Smart Babylon Library <sup>v0.7.0-test</sup>
+# Smart Babylon Library <sup>v1.0.0</sup>
 
 A deterministic infinite library generator inspired by Borges' "The Library of Babel". Generate unique, deterministic books and pages based on coordinate systems without storing any data.
+
+---
+
+## 🚧 Project Status: Research & Development
+
+**IMPORTANT DISCLAIMER**: This project is currently in active research and development phase. It is provided as-is for academic and experimental purposes only. No guarantees of stability, security, or fitness for any particular purpose are provided. Users assume all risks associated with usage.
 
 ---
 
@@ -16,6 +22,38 @@ A deterministic infinite library generator inspired by Borges' "The Library of B
 [![PyPI - Format](https://img.shields.io/pypi/format/smart-babylon-library)](https://pypi.org/project/smart-babylon-library)
 
 ---
+
+## 🚀 Version Information
+
+### Current Version: 1.0.0 (New Architecture)
+
+This release represents a complete architectural rewrite with significant improvements:
+
+- **Modular OOP Design** - Clean separation of concerns
+- **Enhanced Configuration** - Flexible LibraryConfig system  
+- **JSON Serialization** - Full object serialization support
+- **Type Safety** - Improved type hints and validation
+- **Research Integration** - Implements concepts from published papers
+
+### Legacy Version: 0.6.5 (Deprecated)
+
+**⚠️ Version 0.6.5 and earlier are no longer supported.** The previous monolithic architecture has been replaced by the new modular system. Users of older versions should migrate to 1.0.0+.
+
+**Key breaking changes:**
+- New import paths and class names
+- Different configuration system
+- Updated coordinate structure
+- Enhanced API with better object model
+
+---
+
+## 📚 Related Research Publications
+
+This library implements concepts from our published research:
+
+- **[Pointer-Based Security Paradigm](https://doi.org/10.5281/zenodo.17204738)** - Architectural shift from data protection to data non-existence
+- **[Local Data Regeneration Paradigm](https://doi.org/10.5281/zenodo.17264327)** - Ontological shift from data transmission to synchronous state discovery  
+- **[Deterministic Game Engine](https://doi.org/10.5281/zenodo.17383447)** - Practical implementation validating the theoretical paradigms
 
 ## Features
 
@@ -191,6 +229,43 @@ book2 = library.get_book(1, 1, 1, 1, 1)
 
 assert book1.title == book2.title
 assert book1.get_page(0).content == book2.get_page(0).content
+```
+
+## ⚠️ Important Legal Notice
+
+**NO WARRANTY**: This software is provided for academic and research purposes only. The authors make no warranties, express or implied, regarding the software's functionality, security, or fitness for any purpose. Users assume all responsibility and risk for use.
+
+**RESEARCH STATUS**: This implementation is part of ongoing research into deterministic systems and pointer-based architectures. It should not be used in production environments or for any critical applications.
+
+## Citation
+
+If you use this library in academic work, please cite the relevant research papers:
+
+```bibtex
+@misc{suvorov_2025_17204738,
+  author       = {Suvorov, Alexander},
+  title        = {The Pointer-Based Security Paradigm: Architectural
+                   Shift from Data Protection to Data Non-Existence
+                  },
+  month        = sep,
+  year         = 2025,
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.17204738},
+  url          = {https://doi.org/10.5281/zenodo.17204738},
+}
+
+@misc{suvorov_2025_17264327,
+  author       = {Suvorov, Alexander},
+  title        = {The Local Data Regeneration Paradigm: Ontological
+                   Shift from Data Transmission to Synchronous State
+                   Discovery
+                  },
+  month        = oct,
+  year         = 2025,
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.17264327},
+  url          = {https://doi.org/10.5281/zenodo.17264327},
+}
 ```
 
 ## License
