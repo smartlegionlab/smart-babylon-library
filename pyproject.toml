@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "smart-babylon-library"
-version = "1.0.0"
+version = "1.0.1"
 description = "Smart Babylon Library. A deterministic infinite library generator. Generate unique, deterministic books and pages based on coordinate systems without storing any data."
 authors = [
     { name = "Alexander Suvorov", email = "smartlegiondev@gmail.com" }
