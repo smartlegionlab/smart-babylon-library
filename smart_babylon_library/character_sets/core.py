@@ -6,12 +6,13 @@
 # https://github.com/smartlegionlab
 # --------------------------------------------------------
 from abc import ABC, abstractmethod
-from typing import FrozenSet
+from typing import List
+
 
 class CharacterSet(ABC):
     @property
     @abstractmethod
-    def characters(self) -> FrozenSet[str]:
+    def characters(self) -> List[str]:
         pass
 
     @property

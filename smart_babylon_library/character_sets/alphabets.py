@@ -17,7 +17,8 @@ from smart_babylon_library.character_sets.core import CharacterSet
 class CyrillicAlphabet(CharacterSet):
     @property
     def characters(self):
-        return frozenset(CYRILLIC_UPPERCASE + CYRILLIC_LOWERCASE)
+        chars = list(CYRILLIC_UPPERCASE + CYRILLIC_LOWERCASE)
+        return sorted(chars)
 
     @property
     def name(self) -> str:
@@ -26,7 +27,8 @@ class CyrillicAlphabet(CharacterSet):
 class LatinAlphabet(CharacterSet):
     @property
     def characters(self):
-        return frozenset(LATIN_UPPERCASE + LATIN_LOWERCASE)
+        chars = list(LATIN_UPPERCASE + LATIN_LOWERCASE)
+        return sorted(chars)
 
     @property
     def name(self) -> str:

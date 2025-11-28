@@ -12,7 +12,8 @@ from smart_babylon_library.character_sets.core import CharacterSet
 class Digits(CharacterSet):
     @property
     def characters(self):
-        return frozenset(DIGITS)
+        chars = list(DIGITS)
+        return sorted(chars)
 
     @property
     def name(self) -> str:

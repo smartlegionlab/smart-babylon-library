@@ -7,22 +7,21 @@
 # --------------------------------------------------------
 import hashlib
 import random
+from typing import List
 
-from smart_babylon_library.character_sets.alphabets import CyrillicAlphabet, LatinAlphabet
-from smart_babylon_library.character_sets.digits import Digits
-from smart_babylon_library.character_sets.punctuation import Punctuation
 from smart_babylon_library.library.config import LibraryConfig
 
 
 class DeterministicGenerator:
     def __init__(self, config: LibraryConfig = None):
         self.config = config or LibraryConfig()
-        self._all_chars = (
-            list(CyrillicAlphabet().characters) +
-            list(LatinAlphabet().characters) +
-            list(Digits().characters) +
-            list(Punctuation().characters)
-        )
+        self._all_chars = self._build_character_list()
+
+    def _build_character_list(self) -> List[str]:
+        all_chars = []
+        for char_set in self.config.character_sets:
+            all_chars.extend(char_set.characters)
+        return sorted(all_chars)
 
     def _get_deterministic_random(self, seed: str) -> random.Random:
         seed_hash = hashlib.sha256(seed.encode()).hexdigest()

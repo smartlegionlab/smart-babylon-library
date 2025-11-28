@@ -1,4 +1,4 @@
-# Smart Babylon Library <sup>v1.0.0</sup>
+# Smart Babylon Library <sup>v1.0.1</sup>
 
 A deterministic infinite library generator inspired by Borges' "The Library of Babel". Generate unique, deterministic books and pages based on coordinate systems without storing any data.
 
@@ -25,15 +25,19 @@ A deterministic infinite library generator inspired by Borges' "The Library of B
 
 ## 🚀 Version Information
 
-### Current Version: 1.0.0 (New Architecture)
+### Current Version: 1.0.1 (New Architecture)
 
 This release represents a complete architectural rewrite with significant improvements:
 
 - **Modular OOP Design** - Clean separation of concerns
-- **Enhanced Configuration** - Flexible LibraryConfig system  
+- **Enhanced Configuration** - Flexible LibraryConfig system with character sets customization
 - **JSON Serialization** - Full object serialization support
 - **Type Safety** - Improved type hints and validation
 - **Research Integration** - Implements concepts from published papers
+
+
+- **Fixed** errors
+- **Added** the ability to configure character sets
 
 ### Legacy Version: 0.6.5 (Deprecated)
 
@@ -106,12 +110,22 @@ Customize library generation:
 
 ```python
 from smart_babylon_library import SmartBabylonLibrary, LibraryConfig
+from smart_babylon_library.character_sets.alphabets import LatinAlphabet, CyrillicAlphabet
+from smart_babylon_library.character_sets.digits import Digits
 
-# Custom configuration
+# Basic configuration
 config = LibraryConfig(
     title_length_range=(10, 100),      # Title length range
     content_length_range=(500, 2000),  # Page content length range  
     pages_per_book_range=(5, 50)       # Pages per book range
+)
+
+# Custom character sets (only Latin and digits)
+custom_config = LibraryConfig(
+    title_length_range=(10, 50),
+    content_length_range=(200, 1000),
+    pages_per_book_range=(5, 20),
+    character_sets=[LatinAlphabet(), Digits()]
 )
 
 library = SmartBabylonLibrary(config)
@@ -212,11 +226,31 @@ novel_library = SmartBabylonLibrary(novel_config)
 
 ## Character Sets
 
-Library supports multiple character sets:
-- Cyrillic alphabet (upper and lower case)
-- Latin alphabet (upper and lower case) 
-- Digits (0-9)
-- Punctuation and symbols
+Library supports configurable character sets. By default includes all sets, but can be customized:
+
+### Built-in Character Sets:
+- `CyrillicAlphabet()` - Russian alphabet (upper and lower case)
+- `LatinAlphabet()` - English alphabet (upper and lower case) 
+- `Digits()` - Numbers (0-9)
+- `Punctuation()` - Punctuation and symbols
+
+### Custom Character Sets:
+```python
+from smart_babylon_library.character_sets.core import CharacterSet
+from smart_babylon_library.library.config import LibraryConfig
+
+class MyCharset(CharacterSet):
+    @property
+    def characters(self):
+        chars = list("ABC123!@#")
+        return sorted(chars)
+    
+    @property  
+    def name(self) -> str:
+        return "My Custom Charset"
+
+config = LibraryConfig(character_sets=[MyCharset()])
+```
 
 ## Deterministic Behavior
 
@@ -239,7 +273,7 @@ assert book1.get_page(0).content == book2.get_page(0).content
 
 ## License
 
-BSD 3-Clause License
+[BSD 3-Clause License](https://github.com/smartlegionlab/smart-babylon-library/blob/master/LICENSE)
 
 ## GitHub
 

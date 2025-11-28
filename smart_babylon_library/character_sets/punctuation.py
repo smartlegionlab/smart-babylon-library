@@ -12,7 +12,8 @@ from smart_babylon_library.character_sets.core import CharacterSet
 class Punctuation(CharacterSet):
     @property
     def characters(self):
-        return frozenset(PUNCTUATION_MARKS)
+        chars = list(PUNCTUATION_MARKS)
+        return sorted(chars)
 
     @property
     def name(self) -> str:
