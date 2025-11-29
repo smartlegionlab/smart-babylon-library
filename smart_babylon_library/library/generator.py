@@ -13,8 +13,8 @@ from smart_babylon_library.library.config import LibraryConfig
 
 
 class DeterministicGenerator:
-    def __init__(self, config: LibraryConfig = None):
-        self.config = config or LibraryConfig()
+    def __init__(self, config: LibraryConfig):
+        self.config = config
         self._all_chars = self._build_character_list()
 
     def _build_character_list(self) -> List[str]:
@@ -24,7 +24,8 @@ class DeterministicGenerator:
         return sorted(all_chars)
 
     def _get_deterministic_random(self, seed: str) -> random.Random:
-        seed_hash = hashlib.sha256(seed.encode()).hexdigest()
+        full_seed = f"{self.config.universe}:{seed}"
+        seed_hash = hashlib.sha256(full_seed.encode()).hexdigest()
         return random.Random(int(seed_hash, 16))
 
     def generate_book_title(self, coordinates) -> str:

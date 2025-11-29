@@ -47,6 +47,7 @@ class LibraryBook:
 
     def to_dict(self) -> dict:
         return {
+            'universe': self.config.universe,
             'coordinates': self.coordinates.to_dict(),
             'title': self.title,
             'page_count': self.max_pages
@@ -61,7 +62,7 @@ class LibraryBook:
 
     def __str__(self):
         title = self.title[:30] + '...' if len(self.title) > 30 else self.title
-        return f"Book '{title}'"
+        return f"Book '{title}' (Universe: {self.config.universe})"
 
 
 class LibraryPage:
@@ -83,6 +84,7 @@ class LibraryPage:
 
     def to_dict(self) -> dict:
         return {
+            'universe': self.config.universe,
             'coordinates': self.coordinates.to_dict(),
             'page_number': self.page_number,
             'content': self.content
@@ -93,4 +95,4 @@ class LibraryPage:
 
     def __str__(self):
         content_preview = self.content[:50] + '...' if len(self.content) > 50 else self.content
-        return f"Page {self.page_number}: {content_preview}"
+        return f"Page {self.page_number} (Universe: {self.config.universe}): {content_preview}"

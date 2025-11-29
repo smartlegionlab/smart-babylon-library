@@ -15,12 +15,15 @@ from smart_babylon_library.character_sets.punctuation import Punctuation
 
 @dataclass
 class LibraryConfig:
+    universe: str = "default"
     title_length_range: Tuple[int, int] = (2, 3000)
     content_length_range: Tuple[int, int] = (1, 50000)
     pages_per_book_range: Tuple[int, int] = (1, 15784)
     character_sets: Optional[List[CharacterSet]] = None
 
     def __post_init__(self):
+        if not isinstance(self.universe, str):
+            raise ValueError("Universe must be a string")
         if self.title_length_range[0] < 1 or self.title_length_range[1] < self.title_length_range[0]:
             raise ValueError("Invalid title_length_range")
         if self.content_length_range[0] < 1 or self.content_length_range[1] < self.content_length_range[0]:
