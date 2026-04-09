@@ -27,7 +27,7 @@ A deterministic infinite library generator inspired by Borges' "The Library of B
 
 **Summary:** Software provided "AS IS" without warranty. You assume all risks.
 
-**Full legal disclaimer:** See [DISCLAIMER.md](https://github.com/smartlegionlab/babylonian-image-library/blob/master/DISCLAIMER.md)
+**Full legal disclaimer:** See [DISCLAIMER.md](https://github.com/smartlegionlab/smart-babylon-library/blob/master/DISCLAIMER.md)
 
 ---
 
