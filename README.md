@@ -1,12 +1,6 @@
-# Smart Babylon Library <sup>v1.1.0</sup>
+# Smart Babylon Library <sup>v1.1.1</sup>
 
 A deterministic infinite library generator inspired by Borges' "The Library of Babel". Generate unique, deterministic books and pages based on coordinate systems without storing any data.
-
----
-
-## 🚧 Project Status: Research & Development
-
-**IMPORTANT DISCLAIMER**: This project is currently in active research and development phase. It is provided as-is for academic and experimental purposes only. No guarantees of stability, security, or fitness for any particular purpose are provided. Users assume all risks associated with usage.
 
 ---
 
@@ -23,19 +17,33 @@ A deterministic infinite library generator inspired by Borges' "The Library of B
 
 ---
 
-## 🚀 Version Information
+## Project Status: Research & Development
 
-### Current Version: 1.1.0 (Multi-Universe Support)
+**IMPORTANT DISCLAIMER**: This project is currently in active research and development phase. It is provided as-is for academic and experimental purposes only. No guarantees of stability, security, or fitness for any particular purpose are provided. Users assume all risks associated with usage.
+
+## ⚠️ Disclaimer
+
+**By using this software, you agree to the full disclaimer terms.**
+
+**Summary:** Software provided "AS IS" without warranty. You assume all risks.
+
+**Full legal disclaimer:** See [DISCLAIMER.md](https://github.com/smartlegionlab/babylonian-image-library/blob/master/DISCLAIMER.md)
+
+---
+
+## Version Information
+
+### Current Version: 1.1.1 (Multi-Universe Support)
 
 This release adds powerful multi-universe capabilities and enhanced JSON serialization:
 
-- **🌌 Multi-Universe Support** - Create isolated libraries with different configurations
-- **🔧 Enhanced Configuration** - Universe parameter for deterministic isolation
-- **📊 Complete JSON Integration** - Universe field included in all serializations
-- **🔄 Full Roundtrip Support** - Serialize/deserialize with universe preservation
-- **🎯 Universe-Based Determinism** - Content generation isolated per universe
+- **Multi-Universe Support** - Create isolated libraries with different configurations
+- **Enhanced Configuration** - Universe parameter for deterministic isolation
+- **Complete JSON Integration** - Universe field included in all serializations
+- **Full Roundtrip Support** - Serialize/deserialize with universe preservation
+- **Universe-Based Determinism** - Content generation isolated per universe
 
-**New Features in 1.1.0:**
+**New Features in 1.1.1:**
 - `universe` parameter in `LibraryConfig` for creating isolated libraries
 - Universe included in all JSON serializations (books and pages)
 - Deterministic generation per universe - same coordinates produce different content across universes
@@ -56,7 +64,7 @@ This release represents a complete architectural rewrite with significant improv
 
 ### Legacy Version: 0.6.5 (Deprecated)
 
-**⚠️ Version `0.6.5` and earlier are no longer supported.** The previous monolithic architecture has been replaced by the new modular system. Users of older versions should migrate to 1.0.0+.
+**Version `0.6.5` and earlier are no longer supported.** The previous monolithic architecture has been replaced by the new modular system. Users of older versions should migrate to 1.0.0+.
 
 **Key breaking changes:**
 - New import paths and class names
@@ -66,13 +74,14 @@ This release represents a complete architectural rewrite with significant improv
 
 ---
 
-## 📚 Related Research Publications
+## Related Research Publications
 
 This library implements concepts from our published research:
 
 - **[Pointer-Based Security Paradigm](https://doi.org/10.5281/zenodo.17204738)** - Architectural shift from data protection to data non-existence
 - **[Local Data Regeneration Paradigm](https://doi.org/10.5281/zenodo.17264327)** - Ontological shift from data transmission to synchronous state discovery  
 - **[Deterministic Game Engine](https://doi.org/10.5281/zenodo.17383447)** - Practical implementation validating the theoretical paradigms
+- **[Position-Candidate-Hypothesis (PCH) Paradigm](https://doi.org/10.5281/zenodo.17614888)** - A New Research Direction for NP-Complete Problems
 
 ## Features
 
@@ -110,7 +119,7 @@ page = book.get_page(0)
 print(f"Page content: {page.content}")
 ```
 
-## 🌌 Multiple Universes Support
+## Multiple Universes Support
 
 Library now supports multiple parallel universes - each with its own deterministic content:
 
@@ -338,15 +347,10 @@ book3 = other_library.get_book(1, 1, 1, 1, 1)
 assert book1.title != book3.title  # Different universes
 ```
 
-## ⚠️ Important Legal Notice
-
-**NO WARRANTY**: This software is provided for academic and research purposes only. The authors make no warranties, express or implied, regarding the software's functionality, security, or fitness for any purpose. Users assume all responsibility and risk for use.
-
-**RESEARCH STATUS**: This implementation is part of ongoing research into deterministic systems and pointer-based architectures. It should not be used in production environments or for any critical applications.
-
 ## License
 
 [BSD 3-Clause License](https://github.com/smartlegionlab/smart-babylon-library/blob/master/LICENSE)
+Copyright (©) 2026, [Alexander Suvorov](https://github.com/smartlegionlab/)
 
 ## GitHub
 
@@ -556,3 +560,5 @@ Recreated from JSON:
   🔄 Full roundtrip support
   🎯 Deterministic per universe
 ```
+
+---
